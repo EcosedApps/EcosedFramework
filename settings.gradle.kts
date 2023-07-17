@@ -1,22 +1,8 @@
-pluginManagement {
-    repositories {
-        google()
-        gradlePluginPortal()
-        mavenCentral()
-        maven(url = "https://jitpack.io")
-        mavenLocal()
-    }
+// 应用Flutter相关配置
+apply {
+    from("flutter.gradle")
 }
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        gradlePluginPortal()
-        mavenCentral()
-        maven(url = "https://jitpack.io")
-        mavenLocal()
-    }
-}
-
+// 项目名称
 rootProject.name = "Ecosed Framework"
+// 导入app模块
 include(":app")

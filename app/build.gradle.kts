@@ -18,6 +18,23 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+//        splits {
+//            abi {
+//                isEnable = true
+//                reset()
+//                include("x86", "x86_64")
+//                isUniversalApk = false
+//            }
+//        }
+
+        ndk {
+            // Filter for architectures supported by Flutter.
+            abiFilters.add("armeabi-v7a")
+            abiFilters.add("arm64-v8a")
+            abiFilters.add("x86_64")
+            abiFilters.add("x86")
+        }
     }
 
     buildTypes {
@@ -59,6 +76,10 @@ android {
 
 dependencies {
     // 第三方库
+    // FlutterBoost: https://github.com/alibaba/flutter_boost
+    implementation(dependencyNotation = project(path = ":flutter_boost"))
+    // Flutter: https://github.com/flutter/flutter
+    implementation(dependencyNotation = project(path = ":flutter"))
     // AndroidUtilCode: https://github.com/Blankj/AndroidUtilCode
     implementation(dependencyNotation = "com.blankj:utilcodex:1.31.1")
     // DialogX: https://github.com/kongzue/DialogX
