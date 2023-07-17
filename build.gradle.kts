@@ -24,3 +24,10 @@ allprojects {
 subprojects {
     project.evaluationDependsOn(":flutter")
 }
+
+//tasks.create("FlutterPubGet"){
+//    exec {
+//        workingDir = rootProject.projectDir
+//        commandLine("flutter pub get")
+//    }
+//}
