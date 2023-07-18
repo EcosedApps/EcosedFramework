@@ -76,10 +76,10 @@ android {
 
 dependencies {
     // 第三方库
-    // FlutterBoost: https://github.com/alibaba/flutter_boost
-    implementation(dependencyNotation = project(path = ":flutter_boost"))
     // Flutter: https://github.com/flutter/flutter
     implementation(dependencyNotation = project(path = ":flutter"))
+    // FlutterBoost: https://github.com/alibaba/flutter_boost
+    implementation(dependencyNotation = project(path = ":flutter_boost"))
     // AndroidUtilCode: https://github.com/Blankj/AndroidUtilCode
     implementation(dependencyNotation = "com.blankj:utilcodex:1.31.1")
     // DialogX: https://github.com/kongzue/DialogX
