@@ -23,19 +23,6 @@ allprojects {
     }
 }
 
-// 在flutter模块中接入plugin
 subprojects {
     project.evaluationDependsOn(":flutter")
 }
-
-//// flutter pub get
-//tasks.create("FlutterPubGet"){
-//    exec {
-//        workingDir = rootProject.projectDir
-//        if (System.getProperty("os.name").lowercase(java.util.Locale.ROOT).contains("windows")){
-//            commandLine("cmd", "/c", "flutter", "pub", "get")
-//        } else {
-//            commandLine("sh", "-c", "flutter", "pub", "get")
-//        }
-//    }
-//}

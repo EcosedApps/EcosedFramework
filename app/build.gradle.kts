@@ -74,6 +74,13 @@ android {
     }
 }
 
+configurations.all {
+    exclude(
+        group = "androidx.appcompat",
+        module = "appcompat"
+    )
+}
+
 dependencies {
     // 第三方库
     // Flutter: https://github.com/flutter/flutter
@@ -108,8 +115,10 @@ dependencies {
     implementation(dependencyNotation = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21")
     implementation(dependencyNotation = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21")
     // Google 官方库
+    implementation(dependencyNotation = "androidx.core:core-ktx:1.10.1")
     implementation(dependencyNotation = "androidx.annotation:annotation:1.6.0")
     implementation(dependencyNotation = "androidx.browser:browser:1.5.0")
+    implementation(dependencyNotation = "androidx.fragment:fragment-ktx:1.6.0")
     implementation(dependencyNotation = "androidx.preference:preference-ktx:1.2.0")
     implementation(dependencyNotation = "androidx.viewpager2:viewpager2:1.0.0")
     implementation(dependencyNotation = "androidx.recyclerview:recyclerview:1.3.0")
@@ -139,11 +148,4 @@ dependencies {
     androidTestImplementation(dependencyNotation = "androidx.navigation:navigation-testing:2.6.0")
     debugImplementation(dependencyNotation = "androidx.compose.ui:ui-tooling")
     debugImplementation(dependencyNotation = "androidx.compose.ui:ui-test-manifest")
-}
-
-configurations.all {
-    exclude(group = "androidx.annotation", module = "annotation")
-    exclude(group = "androidx.appcompat", module = "appcompat")
-    exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib-jdk7")
-    exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib-jdk8")
 }
