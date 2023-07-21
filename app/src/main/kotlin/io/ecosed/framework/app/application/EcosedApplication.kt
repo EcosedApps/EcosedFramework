@@ -1,23 +1,29 @@
-package io.ecosed.framework.app
+package io.ecosed.framework.app.application
 
-import android.app.Application
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
+import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.color.DynamicColors
 import com.kongzue.dialogx.DialogX
 import com.kongzue.dialogxmaterialyou.style.MaterialYouStyle
 import io.ecosed.framework.framework.EcosedSettings
 import io.flutter.app.FlutterApplication
 import org.lsposed.hiddenapibypass.HiddenApiBypass
+import rikka.material.app.LocaleDelegate
 
-class EcosedFramework : FlutterApplication() {
+class EcosedApplication : FlutterApplication() {
 
     override fun onCreate() {
         super.onCreate()
-        EcosedSettings.initialize(context = this@EcosedFramework)
+        // 初始化首选项
+        EcosedSettings.initialize(context = this@EcosedApplication)
+        // 语言
+        LocaleDelegate.defaultLocale = EcosedSettings.getLocale()
+        // 初始化深色模式
+        AppCompatDelegate.setDefaultNightMode(EcosedSettings.getNightMode(context = this@EcosedApplication))
         // 初始化DialogX
-        DialogX.init(this@EcosedFramework)
+        DialogX.init(this@EcosedApplication)
         DialogX.globalStyle = MaterialYouStyle()
         DialogX.globalTheme = DialogX.THEME.AUTO
         DialogX.autoShowInputKeyboard = true
@@ -32,7 +38,7 @@ class EcosedFramework : FlutterApplication() {
                 "dynamic_colors",
                 true
             ) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
-        ) DynamicColors.applyToActivitiesIfAvailable(this@EcosedFramework)
+        ) DynamicColors.applyToActivitiesIfAvailable(this@EcosedApplication)
     }
 
     override fun attachBaseContext(base: Context?) {

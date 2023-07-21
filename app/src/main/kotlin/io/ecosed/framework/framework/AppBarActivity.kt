@@ -61,10 +61,10 @@ abstract class AppBarActivity : AppActivity() {
         window?.statusBarColor = Color.TRANSPARENT
     }
 }
-
-abstract class AppBarFragmentActivity : AppBarActivity() {
-
-    override fun getLayoutId(): Int {
-        return R.layout.appbar_fragment_activity
-    }
-}
+//
+//abstract class AppBarFragmentActivity : AppBarActivity() {
+//
+//    override fun getLayoutId(): Int {
+//        return R.layout.appbar_fragment_activity
+//    }
+//}

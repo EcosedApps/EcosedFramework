@@ -7,13 +7,13 @@ import io.ecosed.framework.R
 import rikka.core.util.ResourceUtils
 
 object ThemeHelper {
-    private const val THEME_DEFAULT = "DEFAULT"
-    private const val THEME_BLACK = "BLACK"
+    private const val themeDefault = "DEFAULT"
+    private const val themeBlack = "BLACK"
 
 
-    const val KEY_LIGHT_THEME = "light_theme"
-    const val KEY_BLACK_NIGHT_THEME = "black_night_theme"
-    const val KEY_USE_SYSTEM_COLOR = "use_system_color"
+    private const val KEY_LIGHT_THEME = "light_theme"
+    private const val KEY_BLACK_NIGHT_THEME = "black_night_theme"
+    private const val KEY_USE_SYSTEM_COLOR = "use_system_color"
 
     fun isBlackNightTheme(context: Context): Boolean {
         return EcosedSettings.getPreferences()
@@ -27,17 +27,17 @@ object ThemeHelper {
 
     fun getTheme(context: Context): String {
         return if (isBlackNightTheme(context) && ResourceUtils.isNightMode(context.resources.configuration)) {
-            THEME_BLACK
+            themeBlack
         } else {
-            EcosedSettings.getPreferences().getString(KEY_LIGHT_THEME, THEME_DEFAULT)!!
+            EcosedSettings.getPreferences().getString(KEY_LIGHT_THEME, themeBlack)!!
         }
     }
 
     @StyleRes
     fun getThemeStyleRes(context: Context): Int {
         return when (getTheme(context)) {
-            THEME_BLACK -> R.style.ThemeOverlay_Black
-            THEME_DEFAULT -> R.style.ThemeOverlay
+            themeBlack -> R.style.ThemeOverlay_Black
+            themeDefault -> R.style.ThemeOverlay
             else -> R.style.ThemeOverlay
         }
     }

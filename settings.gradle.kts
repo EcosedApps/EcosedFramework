@@ -1,5 +1,3 @@
-apply {
-    from("flutter.gradle")
-}
 rootProject.name = "Ecosed Framework"
+apply(from = "flutter.gradle")
 include(":app")
