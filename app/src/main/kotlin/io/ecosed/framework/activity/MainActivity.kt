@@ -1,6 +1,8 @@
 package io.ecosed.framework.activity
 
 import android.annotation.SuppressLint
+import android.app.ActivityManager
+import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
@@ -28,6 +30,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.window.layout.DisplayFeature
+import com.blankj.utilcode.util.AppUtils
+import com.blankj.utilcode.util.ServiceUtils
 import com.google.accompanist.adaptive.calculateDisplayFeatures
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.internal.EdgeToEdgeUtils
@@ -38,10 +42,11 @@ import com.idlefish.flutterboost.containers.FlutterBoostFragment
 import io.ecosed.framework.R
 import io.ecosed.framework.databinding.ContainerBinding
 import io.ecosed.framework.fragment.ReturnFragment
+import io.ecosed.framework.services.EcosedService
 import io.ecosed.framework.ui.layout.ActivityMain
 import io.ecosed.framework.ui.theme.EcosedFrameworkTheme
-import io.ecosed.framework.utils.ThemeHelper
 import io.ecosed.framework.utils.AppCompatFlutter
+import io.ecosed.framework.utils.ThemeHelper
 import io.flutter.embedding.android.FlutterEngineConfigurator
 import io.flutter.embedding.android.FlutterView
 import io.flutter.embedding.android.RenderMode
@@ -57,10 +62,13 @@ import rikka.material.app.MaterialActivity
 import rikka.shizuku.Shizuku
 import java.lang.ref.WeakReference
 
+
 class MainActivity : MaterialActivity(), FlutterBoostDelegate, FlutterBoost.Callback, FlutterPlugin,
     MethodChannel.MethodCallHandler, AppCompatFlutter, FlutterEngineConfigurator,
     Shizuku.OnBinderReceivedListener, Shizuku.OnBinderDeadListener,
     Shizuku.OnRequestPermissionResultListener, DefaultLifecycleObserver, Runnable {
+
+    private lateinit var aidlSer: Intent
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
@@ -109,6 +117,19 @@ class MainActivity : MaterialActivity(), FlutterBoostDelegate, FlutterBoost.Call
                 this@MainActivity
             )
         }
+        aidlSer = Intent(this@MainActivity, EcosedService().javaClass)
+        startService(aidlSer)
+
+
+        Toast.makeText(
+            this@MainActivity,
+            ServiceUtils.isServiceRunning(
+                EcosedService().javaClass
+            ).toString(),
+            Toast.LENGTH_SHORT
+        ).show()
+
+
         super<MaterialActivity>.onCreate(savedInstanceState)
         // 绑定布局
         val binding = ContainerBinding.inflate(layoutInflater)
@@ -261,6 +282,7 @@ class MainActivity : MaterialActivity(), FlutterBoostDelegate, FlutterBoost.Call
     override fun onDestroy() {
         super<MaterialActivity>.onDestroy()
         lifecycle.removeObserver(this@MainActivity)
+        stopService(aidlSer)
     }
 
     // material activity end
@@ -439,6 +461,7 @@ class MainActivity : MaterialActivity(), FlutterBoostDelegate, FlutterBoost.Call
     private fun errorFlutterViewNull(): Nothing {
         error("Error: FlutterView is null!")
     }
+
 
     companion object {
         const val tag: String = "MainActivity"
