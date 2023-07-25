@@ -272,6 +272,9 @@ class MainActivity : MaterialActivity(), FlutterBoostDelegate, FlutterBoost.Call
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_settings -> navController.navigate(R.id.nav_settings)
+        }
         return super.onOptionsItemSelected(item)
     }
 
