@@ -1,7 +1,3 @@
-/**
- * 此文件是Ecosed Framework的一部分。
- *
- */
 package io.ecosed.framework.ui.theme
 
 import android.content.Context
@@ -21,20 +17,18 @@ import androidx.compose.ui.platform.LocalView
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
-/**
- * 创建者: wyq0918dev
- * 源码仓库: https://github.com/Ecosed/EcosedFramework
- * 创建时间: 2023/07/17
- * 描述: Compose主题样式
- * 文档:
- */
+private val darkColorScheme = darkColorScheme(
+    primary = Purple80,
+    secondary = PurpleGrey80,
+    tertiary = Pink80
+)
 
-/**
- * Compose主题样式
- *
- * @param dynamicColor 是否启用动态颜色
- * @param content 页面内容
- */
+private val lightColorScheme = lightColorScheme(
+    primary = Purple40,
+    secondary = PurpleGrey40,
+    tertiary = Pink40
+)
+
 @Composable
 fun EcosedFrameworkTheme(
     dynamicColor: Boolean = true,
@@ -52,27 +46,14 @@ fun EcosedFrameworkTheme(
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             if (darkTheme) {
-                dynamicDarkColorScheme(
-                    context = context
-                )
+                dynamicDarkColorScheme(context)
             } else {
-                dynamicLightColorScheme(
-                    context = context
-                )
+                dynamicLightColorScheme(context)
             }
         }
 
-        darkTheme -> darkColorScheme(
-            primary = Purple80,
-            secondary = PurpleGrey80,
-            tertiary = Pink80
-        )
-
-        else -> lightColorScheme(
-            primary = Purple40,
-            secondary = PurpleGrey40,
-            tertiary = Pink40
-        )
+        darkTheme -> darkColorScheme
+        else -> lightColorScheme
     }
 
     if (!view.isInEditMode) SideEffect {

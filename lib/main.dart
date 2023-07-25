@@ -1,19 +1,60 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_boost/flutter_boost.dart';
 
-void main() => runApp(const MyApp());
+import 'boost/binding.dart';
+import 'boost/observer.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+Future main() async {
+  PageVisibilityBinding.instance
+      .addGlobalObserver(AppGlobalPageVisibilityObserver());
+  CustomFlutterBinding();
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  runApp(const EcosedManager());
+}
+
+class EcosedManager extends StatelessWidget {
+  const EcosedManager({super.key});
+
+  static const String appName = "Ecosed Framework";
+
+  static Map<String, FlutterBoostRouteFactory> routerMap = {
+    '/': (settings, uniqueId) {
+      return CupertinoPageRoute(
+          settings: settings,
+          title: appName,
+          builder: (_) {
+            return const MyHomePage(title: appName);
+          });
+    },
+  };
+
+  Route<dynamic>? routeFactory(RouteSettings settings, String? uniqueId) {
+    FlutterBoostRouteFactory? func = routerMap[settings.name!];
+    if (func == null) {
+      return null;
+    }
+    return func(settings, uniqueId);
+  }
+
+  Widget appBuilder(BuildContext context, Widget home) {
+    return CupertinoApp(
+      home: home,
+      builder: (_, __) {
+        return home;
+      },
+      title: appName,
+      theme: const CupertinoThemeData(
+        primaryColor: CupertinoColors.systemBlue,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+    return FlutterBoostApp(routeFactory, appBuilder: (home) {
+      return appBuilder(context, home);
+    });
   }
 }
 
@@ -37,29 +78,55 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
+    return CupertinoTabScaffold(
+      tabBar: CupertinoTabBar(
+        currentIndex: 1,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.phone), label: 'Calls'),
+          BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.chat_bubble_2), label: 'Chats'),
+          BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.settings), label: 'Settings'),
+        ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+      tabBuilder: (context, index) {
+        late final CupertinoTabView returnValue;
+        switch (index) {
+          case 0:
+            returnValue = CupertinoTabView(builder: (context) {
+              return const CupertinoPageScaffold(
+                  navigationBar: CupertinoNavigationBar(
+                    middle: Text('Calls'),
+                  ),
+                  child: Center(child: Text('Calls')));
+            });
+            break;
+          case 1:
+            returnValue = CupertinoTabView(
+              builder: (context) {
+                return const CupertinoPageScaffold(
+                    navigationBar: CupertinoNavigationBar(
+                      middle: Text('Chats'),
+                    ),
+                    child: Center(child: Text('Chats')));
+              },
+            );
+            break;
+          case 2:
+            returnValue = CupertinoTabView(
+              builder: (context) {
+                return const CupertinoPageScaffold(
+                    navigationBar: CupertinoNavigationBar(
+                      middle: Text('Settings'),
+                    ),
+                    child: Center(child: Text('Settings')));
+              },
+            );
+            break;
+        }
+        return returnValue;
+      },
     );
   }
 }
