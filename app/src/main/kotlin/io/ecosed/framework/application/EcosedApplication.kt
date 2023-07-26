@@ -45,16 +45,13 @@ class EcosedApplication : FlutterApplication() {
         super.onLowMemory()
     }
 
-
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
     }
 
     override fun onTrimMemory(level: Int) {
         super.onTrimMemory(level)
-//        stopService(Intent(this@EcosedApplication, EcosedService().javaClass))
-//        stopService(Intent(this@EcosedApplication, BillingService().javaClass))
-//        stopService(Intent(this@EcosedApplication, LicensingService().javaClass))
+
     }
 
     override fun attachBaseContext(base: Context?) {

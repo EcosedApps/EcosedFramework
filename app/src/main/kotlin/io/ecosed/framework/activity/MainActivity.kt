@@ -121,7 +121,6 @@ class MainActivity : MaterialActivity(), FlutterPlugin, MethodChannel.MethodCall
             Toast.LENGTH_SHORT
         ).show()
 
-
         super<MaterialActivity>.onCreate(savedInstanceState)
         // 绑定布局
         val binding = ContainerBinding.inflate(layoutInflater)
