@@ -22,23 +22,32 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import rikka.shizuku.Shizuku
 
-
 class EcosedService : Service() {
-    private val channelId = "id"
-    private val NOTIFICATION_ID = 1
+
+    override fun onCreate() {
+        super.onCreate()
+        runStartForeground()
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        return super.onStartCommand(intent, flags, startId)
+    }
 
     override fun onBind(intent: Intent): IBinder {
         return object : EcosedFramework.Stub() {
-            override fun openFrameworkManager() = openFramework()
             override fun getFrameworkVersion(): String = getFramework()
             override fun getShizukuVersion(): String = getShizuku()
             override fun getSystemVersion(): String = getSystem()
         }
     }
 
-    override fun onCreate() {
-        super.onCreate()
-        runStartForeground()
+    override fun onUnbind(intent: Intent?): Boolean {
+        return super.onUnbind(intent)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
     }
 
     private fun openFramework() {
@@ -55,7 +64,7 @@ class EcosedService : Service() {
 
     private fun getShizuku(): String {
         return try {
-            Shizuku.getVersion().toString()
+            "Shizuku ${Shizuku.getVersion()}"
         } catch (e: Exception) {
             Log.getStackTraceString(e)
         }
@@ -78,10 +87,9 @@ class EcosedService : Service() {
         }
     }
 
-
     private fun runStartForeground() {
         setupNotificationChannel()
-        startForeground(NOTIFICATION_ID, buildNotification())
+        startForeground(notificationId, buildNotification())
     }
 
     private fun setupNotificationChannel() {
@@ -99,10 +107,12 @@ class EcosedService : Service() {
         }
     }
 
-    private fun buildNotification(): Notification? {
+    private fun buildNotification(): Notification {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             PermissionUtils.permission(Manifest.permission.POST_NOTIFICATIONS)
         }
+
+
 
         val contentIntent = PendingIntent.getActivities(
             this@EcosedService,
@@ -123,12 +133,17 @@ class EcosedService : Service() {
         val notification = NotificationCompat.Builder(this, channelId)
             .setContentTitle(getString(R.string.app_name))
             .setContentText("应用正在运行")
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentIntent(contentIntent)
+            .setSmallIcon(R.drawable.baseline_keyboard_command_key_24)
+//            .setContentIntent(contentIntent)
             .build()
 
         notification.flags = Notification.FLAG_ONGOING_EVENT
 
         return notification
+    }
+
+    companion object {
+        private const val channelId = "id"
+        private const val notificationId = 1
     }
 }

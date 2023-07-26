@@ -63,10 +63,10 @@ import rikka.shizuku.Shizuku
 import java.lang.ref.WeakReference
 
 
-class MainActivity : MaterialActivity(), FlutterBoostDelegate, FlutterBoost.Callback, FlutterPlugin,
-    MethodChannel.MethodCallHandler, AppCompatFlutter, FlutterEngineConfigurator,
-    Shizuku.OnBinderReceivedListener, Shizuku.OnBinderDeadListener,
-    Shizuku.OnRequestPermissionResultListener, DefaultLifecycleObserver, Runnable {
+class MainActivity : MaterialActivity(), FlutterPlugin, MethodChannel.MethodCallHandler,
+    AppCompatFlutter, FlutterEngineConfigurator, Shizuku.OnBinderReceivedListener,
+    Shizuku.OnBinderDeadListener, Shizuku.OnRequestPermissionResultListener,
+    DefaultLifecycleObserver, Runnable {
 
     private lateinit var aidlSer: Intent
 
@@ -110,16 +110,8 @@ class MainActivity : MaterialActivity(), FlutterBoostDelegate, FlutterBoost.Call
     // material activity begin
 
     override fun onCreate(savedInstanceState: Bundle?) {
-//        WeakReference(application).get()?.apply {
-//            FlutterBoost.instance().setup(
-//                this@apply,
-//                this@MainActivity,
-//                this@MainActivity
-//            )
-//        }
         aidlSer = Intent(this@MainActivity, EcosedService().javaClass)
         startService(aidlSer)
-
 
         Toast.makeText(
             this@MainActivity,
@@ -289,34 +281,6 @@ class MainActivity : MaterialActivity(), FlutterBoostDelegate, FlutterBoost.Call
     }
 
     // material activity end
-
-    // flutter boost delegate begin
-
-    override fun pushNativeRoute(options: FlutterBoostRouteOptions?) {
-
-    }
-
-    override fun pushFlutterRoute(options: FlutterBoostRouteOptions?) {
-
-    }
-
-    // flutter boost delegate end
-
-    // flutter boost start begin
-
-    override fun onStart(engine: FlutterEngine?) {
-        engine?.let {
-            try {
-                it.plugins.add(this@MainActivity).run {
-                    GeneratedPluginRegistrant.registerWith(it)
-                }
-            } catch (e: Exception) {
-                Log.e(tag, Log.getStackTraceString(e))
-            }
-        }
-    }
-
-    // flutter boost start end
 
     // flutter plugin begin
 

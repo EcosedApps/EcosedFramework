@@ -24,21 +24,4 @@ object EcosedSettings {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     }
 
-    @AppCompatDelegate.NightMode
-    fun getNightMode(context: Context): Int {
-        var defValue = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-        if (isWatch(context)) {
-            defValue = AppCompatDelegate.MODE_NIGHT_YES
-        }
-        return getPreferences().getInt(NIGHT_MODE, defValue)
-    }
-
-    fun getLocale(): Locale {
-        val tag = getPreferences().getString(LANGUAGE, null)
-        return if (TextUtils.isEmpty(tag) || "SYSTEM" == tag) {
-            Locale.getDefault()
-        } else {
-            Locale.forLanguageTag(tag!!)
-        }
-    }
 }
