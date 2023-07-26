@@ -110,13 +110,13 @@ class MainActivity : MaterialActivity(), FlutterBoostDelegate, FlutterBoost.Call
     // material activity begin
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        WeakReference(application).get()?.apply {
-            FlutterBoost.instance().setup(
-                this@apply,
-                this@MainActivity,
-                this@MainActivity
-            )
-        }
+//        WeakReference(application).get()?.apply {
+//            FlutterBoost.instance().setup(
+//                this@apply,
+//                this@MainActivity,
+//                this@MainActivity
+//            )
+//        }
         aidlSer = Intent(this@MainActivity, EcosedService().javaClass)
         startService(aidlSer)
 
@@ -323,6 +323,7 @@ class MainActivity : MaterialActivity(), FlutterBoostDelegate, FlutterBoost.Call
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         mChannel = MethodChannel(binding.binaryMessenger, channel)
         mChannel.setMethodCallHandler(this@MainActivity)
+        Log.i(tag, "中中中中中")
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {

@@ -1,5 +1,7 @@
 package io.ecosed.framework.ui.layout
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,7 +12,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -32,45 +36,56 @@ fun ScreenContainer(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        Column(
+        Box(
             modifier = Modifier.fillMaxSize()
         ) {
-            ElevatedCard(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 16.dp,
-                        end = 16.dp,
-                        top = 16.dp,
-                        bottom = 8.dp
-                    ),
-                colors = CardDefaults.elevatedCardColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer
-                )
+            Image(
+                painter = painterResource(
+                    id = R.drawable.custom_wallpaper_24
+                ),
+                contentDescription = null,
+                contentScale = ContentScale.FillBounds,
+                modifier = Modifier.fillMaxSize()
+            )
+            Column(
+                modifier = Modifier.fillMaxSize()
             ) {
-                TopActionBar(
-                    factory = topBarFactory,
-                    modifier = Modifier.fillMaxWidth(),
-                    visible = topBarVisible,
-                )
-            }
-            ElevatedCard(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 16.dp,
-                        end = 16.dp,
-                        top = 16.dp,
-                        bottom = 8.dp
+                ElevatedCard(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = 16.dp,
+                            end = 16.dp,
+                            top = 16.dp,
+                            bottom = 8.dp
+                        ),
+                    colors = CardDefaults.elevatedCardColors(
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer
                     )
-            ) {
-                NavHostFactory(
-                    factory = container,
-                    modifier = Modifier.fillMaxSize()
-                )
+                ) {
+                    TopActionBar(
+                        factory = topBarFactory,
+                        modifier = Modifier.fillMaxWidth(),
+                        visible = topBarVisible,
+                    )
+                }
+                ElevatedCard(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = 16.dp,
+                            end = 16.dp,
+                            top = 16.dp,
+                            bottom = 8.dp
+                        )
+                ) {
+                    NavHostFactory(
+                        factory = container,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
             }
         }
-
     }
 }
 
