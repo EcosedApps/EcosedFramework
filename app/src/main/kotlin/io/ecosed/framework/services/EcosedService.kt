@@ -16,7 +16,6 @@ import com.blankj.utilcode.util.PermissionUtils
 import com.farmerbb.taskbar.lib.Taskbar
 import io.ecosed.framework.BuildConfig
 import io.ecosed.framework.EcosedFramework
-import io.ecosed.framework.IBinderFactory
 import io.ecosed.framework.R
 import io.ecosed.framework.utils.ChineseCaleUtils
 import io.ecosed.framework.utils.EnvironmentUtils
