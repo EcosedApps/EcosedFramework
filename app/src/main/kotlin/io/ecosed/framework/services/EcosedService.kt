@@ -53,18 +53,17 @@ class EcosedService : Service() {
         return object : EcosedFramework.Stub() {
             override fun getFrameworkVersion(): String = frameworkVersion()
             override fun getShizukuVersion(): String = shizukuVersion()
-            override fun getAndroidVersion(): String = systemVersion()
-            override fun getKernelVersion(): String = Os.uname().release
-            override fun getSystemVersion(): String = Os.uname().version
-            override fun getMachineArch(): String = Os.uname().machine
-            override fun isWatch(): Boolean = EnvironmentUtils.isWatch(this@EcosedService)
-            override fun isUseDynamicColors(): Boolean  = true
-            override fun isUseDesktopMode(): Boolean = true
-            override fun openTaskbarSettings() = Taskbar.openSettings(this@EcosedService, "", R.style.Theme_EcosedFramework_ActionBar)
+            override fun getAndroidVersion(): String = androidVersion()
+            override fun getKernelVersion(): String = kernelVersion()
+            override fun getSystemVersion(): String = systemVersion()
+            override fun getMachineArch(): String = machineArch()
+            override fun getChineseCale(): String = chineseCale()
+            override fun getOnePoem(): String = onePoem()
+            override fun isWatch(): Boolean = watch()
+            override fun isUseDynamicColors(): Boolean = dynamicColors()
+            override fun openDesktopSettings() = taskbarSettings()
             override fun openEcosedSettings() = ecosedSettings()
-            override fun getChineseCale(): String = ChineseCaleUtils.getChineseCale()
-            override fun getOnePoem(): String = poem[(poem.indices).random()]
-            override fun execCmd(cmd: String?) {}
+            override fun execCmd(cmd: String) = execShell(cmd = cmd)
         }
     }
 
@@ -77,11 +76,7 @@ class EcosedService : Service() {
 
     }
 
-    private fun ecosedSettings() {
-        CoroutineScope(Dispatchers.Main).launch {
 
-        }
-    }
 
     private fun frameworkVersion(): String {
         return BuildConfig.VERSION_NAME
@@ -95,7 +90,7 @@ class EcosedService : Service() {
         }
     }
 
-    private fun systemVersion(): String {
+    private fun androidVersion(): String {
         return when (Build.VERSION.SDK_INT) {
             Build.VERSION_CODES.N -> "Android Nougat 7.0"
             Build.VERSION_CODES.N_MR1 -> "Android Nougat 7.1"
@@ -110,6 +105,55 @@ class EcosedService : Service() {
             34 -> "Android UpsideDownCake 14"
             else -> "unknown"
         }
+    }
+
+    private fun kernelVersion(): String {
+        return Os.uname().release
+    }
+
+    private fun systemVersion(): String {
+        return Os.uname().version
+    }
+
+    private fun machineArch(): String {
+        return Os.uname().machine
+    }
+
+    private fun chineseCale(): String {
+        return ChineseCaleUtils.getChineseCale()
+    }
+
+    private fun onePoem(): String {
+        return poem[(poem.indices).random()]
+    }
+
+    private fun watch(): Boolean {
+        return EnvironmentUtils.isWatch(this@EcosedService)
+    }
+
+    private fun dynamicColors(): Boolean {
+        return true
+    }
+
+    private fun taskbarSettings() {
+        CoroutineScope(
+            context = Dispatchers.Main
+        ).launch {
+            Taskbar.openSettings(
+                this@EcosedService,
+                "任务栏设置",
+                R.style.Theme_EcosedFramework_ActionBar
+            )
+        }
+    }
+    private fun ecosedSettings() {
+        CoroutineScope(Dispatchers.Main).launch {
+
+        }
+    }
+
+    private fun execShell(cmd: String) {
+
     }
 
     private fun setupNotificationChannel() {
@@ -134,7 +178,7 @@ class EcosedService : Service() {
 
         val notification = NotificationCompat.Builder(this, channelId)
             .setContentTitle(getString(R.string.app_name))
-            .setContentText("应用正在运行")
+            .setContentText("服务正在运行")
             .setSmallIcon(R.drawable.baseline_keyboard_command_key_24)
             .build()
 
