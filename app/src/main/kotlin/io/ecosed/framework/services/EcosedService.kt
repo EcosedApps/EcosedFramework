@@ -146,8 +146,5 @@ class EcosedService : Service() {
     companion object {
         private const val channelId = "id"
         private const val notificationId = 1
-
-        const val binderTypeFramework: Int = 0
-        const val binderTypeClient: Int = 1
     }
 }
