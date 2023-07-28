@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -17,8 +16,8 @@ import com.blankj.utilcode.util.PermissionUtils
 import com.farmerbb.taskbar.lib.Taskbar
 import io.ecosed.framework.BuildConfig
 import io.ecosed.framework.EcosedFramework
+import io.ecosed.framework.IBinderFactory
 import io.ecosed.framework.R
-import io.ecosed.framework.activity.MainActivity
 import io.ecosed.framework.utils.ChineseCaleUtils
 import io.ecosed.framework.utils.EnvironmentUtils
 import kotlinx.coroutines.CoroutineScope
@@ -148,5 +147,8 @@ class EcosedService : Service() {
     companion object {
         private const val channelId = "id"
         private const val notificationId = 1
+
+        const val binderTypeFramework: Int = 0
+        const val binderTypeClient: Int = 1
     }
 }

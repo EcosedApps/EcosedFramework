@@ -1,9 +1,13 @@
 package io.ecosed.framework.activity
 
 import android.annotation.SuppressLint
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.content.res.Resources
 import android.os.Bundle
+import android.os.IBinder
 import android.util.Log
 import android.view.Gravity
 import android.view.Menu
@@ -18,6 +22,9 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.DefaultLifecycleObserver
@@ -33,6 +40,7 @@ import com.google.accompanist.adaptive.calculateDisplayFeatures
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.internal.EdgeToEdgeUtils
 import com.idlefish.flutterboost.containers.FlutterBoostFragment
+import io.ecosed.framework.EcosedFramework
 import io.ecosed.framework.R
 import io.ecosed.framework.databinding.ContainerBinding
 import io.ecosed.framework.fragment.ReturnFragment
@@ -55,10 +63,10 @@ import rikka.material.app.MaterialActivity
 import rikka.shizuku.Shizuku
 
 
-class MainActivity : MaterialActivity(), FlutterPlugin, MethodChannel.MethodCallHandler,
-    AppCompatFlutter, FlutterEngineConfigurator, Shizuku.OnBinderReceivedListener,
-    Shizuku.OnBinderDeadListener, Shizuku.OnRequestPermissionResultListener,
-    DefaultLifecycleObserver, Runnable {
+class MainActivity : MaterialActivity(), ServiceConnection, FlutterPlugin,
+    MethodChannel.MethodCallHandler, AppCompatFlutter, FlutterEngineConfigurator,
+    Shizuku.OnBinderReceivedListener, Shizuku.OnBinderDeadListener,
+    Shizuku.OnRequestPermissionResultListener, DefaultLifecycleObserver, Runnable {
 
     private lateinit var aidlSer: Intent
 
@@ -70,6 +78,8 @@ class MainActivity : MaterialActivity(), FlutterPlugin, MethodChannel.MethodCall
     private lateinit var mFlutterFragment: FlutterBoostFragment
 
     private lateinit var mChannel: MethodChannel
+
+    private var mFramework: EcosedFramework? = null
 
     private val poem: ArrayList<String> = arrayListOf(
         "不向焦虑与抑郁投降，这个世界终会有我们存在的地方。",
@@ -103,15 +113,9 @@ class MainActivity : MaterialActivity(), FlutterPlugin, MethodChannel.MethodCall
 
     override fun onCreate(savedInstanceState: Bundle?) {
         aidlSer = Intent(this@MainActivity, EcosedService().javaClass)
+        aidlSer.action = "io.ecosed.framework.action"
         startService(aidlSer)
-
-        Toast.makeText(
-            this@MainActivity,
-            ServiceUtils.isServiceRunning(
-                EcosedService().javaClass
-            ).toString(),
-            Toast.LENGTH_SHORT
-        ).show()
+        bindService(aidlSer, this@MainActivity, Context.BIND_AUTO_CREATE)
 
         super<MaterialActivity>.onCreate(savedInstanceState)
         // 绑定布局
@@ -141,9 +145,11 @@ class MainActivity : MaterialActivity(), FlutterPlugin, MethodChannel.MethodCall
         }
         mContainer = mFragmentContainerView
         // 随机抽取诗句作为子标题
-        mActionBar.subtitle = poem[(poem.indices).random()]
+       // mActionBar.subtitle = poem[(poem.indices).random()]
 
         lifecycle.addObserver(this@MainActivity)
+
+
     }
 
     override fun computeUserThemeKey(): String {
@@ -272,6 +278,28 @@ class MainActivity : MaterialActivity(), FlutterPlugin, MethodChannel.MethodCall
     }
 
     // material activity end
+
+    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+        Log.i(tag, "服务端绑定成功")
+
+        mFramework = EcosedFramework.Stub.asInterface(service)
+        mFramework?.onePoem?.let {
+            mActionBar.subtitle = it
+        }
+    }
+
+    override fun onServiceDisconnected(name: ComponentName?) {
+
+    }
+
+    override fun onBindingDied(name: ComponentName?) {
+        super.onBindingDied(name)
+    }
+
+    override fun onNullBinding(name: ComponentName?) {
+        super.onNullBinding(name)
+    }
+
 
     // flutter plugin begin
 
@@ -417,6 +445,7 @@ class MainActivity : MaterialActivity(), FlutterPlugin, MethodChannel.MethodCall
     override fun run() {
 
     }
+
     private fun errorFlutterViewNull(): Nothing {
         error("Error: FlutterView is null!")
     }
