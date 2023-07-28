@@ -72,7 +72,6 @@ import com.google.android.material.appbar.MaterialToolbar
 import io.ecosed.framework.BuildConfig
 import io.ecosed.framework.R
 import io.ecosed.framework.ui.navigation.ItemType
-
 import io.ecosed.framework.ui.navigation.ScreenType
 import io.ecosed.framework.ui.screen.Screen
 import io.ecosed.framework.ui.window.ContentType
@@ -102,9 +101,9 @@ fun ActivityMain(
     val pages = listOf(
         Screen.Overview,
         Screen.Container,
-     //   Screen.Apps,
+        //   Screen.Apps,
         Screen.Flutter,
- //       Screen.Manager,
+        //       Screen.Manager,
         Screen.Settings,
         Screen.Divider,
         Screen.Preference,
@@ -115,7 +114,7 @@ fun ActivityMain(
         Screen.Container,
         //Screen.Apps,
         Screen.Flutter,
-   //     Screen.Manager,
+        //     Screen.Manager,
         Screen.Settings
     )
 

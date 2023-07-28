@@ -1,8 +1,6 @@
 package io.ecosed.framework.activity
 
 import android.annotation.SuppressLint
-import android.app.ActivityManager
-import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
@@ -30,14 +28,10 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.window.layout.DisplayFeature
-import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.ServiceUtils
 import com.google.accompanist.adaptive.calculateDisplayFeatures
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.internal.EdgeToEdgeUtils
-import com.idlefish.flutterboost.FlutterBoost
-import com.idlefish.flutterboost.FlutterBoostDelegate
-import com.idlefish.flutterboost.FlutterBoostRouteOptions
 import com.idlefish.flutterboost.containers.FlutterBoostFragment
 import io.ecosed.framework.R
 import io.ecosed.framework.databinding.ContainerBinding
@@ -55,12 +49,10 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugins.GeneratedPluginRegistrant
 import rikka.core.ktx.unsafeLazy
 import rikka.core.res.isNight
 import rikka.material.app.MaterialActivity
 import rikka.shizuku.Shizuku
-import java.lang.ref.WeakReference
 
 
 class MainActivity : MaterialActivity(), FlutterPlugin, MethodChannel.MethodCallHandler,

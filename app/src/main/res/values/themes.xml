@@ -2,4 +2,5 @@
 <resources>
 
     <style name="Theme.EcosedFramework" parent="Theme.Material3.DayNight.NoActionBar" />
+    <style name="Theme.EcosedFramework.ActionBar" parent="Theme.Material3.DayNight" />
 </resources>
