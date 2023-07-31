@@ -366,8 +366,8 @@ class MainActivity : MaterialActivity(), ServiceConnection, FlutterPlugin,
             .renderMode(RenderMode.surface)
             .transparencyMode(TransparencyMode.transparent)
             .shouldAttachEngineToActivity(true)
-            .build<FlutterBoostFragment?>().also {
-                mFlutterFragment = it
+            .build<FlutterBoostFragment?>().also { fragment ->
+                mFlutterFragment = fragment
             }
     }
 
@@ -403,6 +403,8 @@ class MainActivity : MaterialActivity(), ServiceConnection, FlutterPlugin,
                 ActivityMain(
                     windowSize = windowSize,
                     displayFeatures = displayFeatures,
+                    navControllerFragment = navController,
+                    configuration = appBarConfiguration,
                     container = mContainer,
                     flutter = mFlutterFrame,
 

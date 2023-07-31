@@ -39,14 +39,14 @@ fun ScreenContainer(
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
-            Image(
-                painter = painterResource(
-                    id = R.drawable.custom_wallpaper_24
-                ),
-                contentDescription = null,
-                contentScale = ContentScale.FillBounds,
-                modifier = Modifier.fillMaxSize()
-            )
+//            Image(
+//                painter = painterResource(
+//                    id = R.drawable.custom_wallpaper_24
+//                ),
+//                contentDescription = null,
+//                contentScale = ContentScale.FillBounds,
+//                modifier = Modifier.fillMaxSize()
+//            )
             Column(
                 modifier = Modifier.fillMaxSize()
             ) {
@@ -54,10 +54,10 @@ fun ScreenContainer(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            start = 16.dp,
-                            end = 16.dp,
-                            top = 16.dp,
-                            bottom = 8.dp
+                            start = 12.dp,
+                            end = 12.dp,
+                            top = 12.dp,
+                            bottom = 6.dp
                         ),
                     colors = CardDefaults.elevatedCardColors(
                         containerColor = MaterialTheme.colorScheme.secondaryContainer
@@ -73,10 +73,10 @@ fun ScreenContainer(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            start = 16.dp,
-                            end = 16.dp,
-                            top = 16.dp,
-                            bottom = 8.dp
+                            start = 12.dp,
+                            end = 12.dp,
+                            top = 6.dp,
+                            bottom = 12.dp
                         )
                 ) {
                     NavHostFactory(

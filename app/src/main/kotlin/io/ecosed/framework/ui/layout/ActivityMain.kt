@@ -57,6 +57,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentContainerView
+import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -64,6 +65,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import androidx.window.layout.DisplayFeature
@@ -86,6 +88,8 @@ import kotlinx.coroutines.launch
 fun ActivityMain(
     windowSize: WindowSizeClass,
     displayFeatures: List<DisplayFeature>,
+    navControllerFragment: NavController,
+    configuration: AppBarConfiguration,
     container: FragmentContainerView,
     flutter: FrameLayout,
     appsUpdate: (RecyclerView) -> Unit,
@@ -99,6 +103,7 @@ fun ActivityMain(
     taskbar: () -> Unit
 ) {
     val pages = listOf(
+        Screen.ComposeTitle,
         Screen.Overview,
         Screen.Container,
         //   Screen.Apps,
@@ -106,8 +111,9 @@ fun ActivityMain(
         //       Screen.Manager,
         Screen.Settings,
         Screen.Divider,
-        Screen.Preference,
+        //Screen.Preference,
         Screen.About,
+        Screen.FragmentTitle,
     )
     val items = listOf(
         Screen.Overview,
@@ -118,10 +124,10 @@ fun ActivityMain(
         Screen.Settings
     )
 
-    val navController: NavHostController = rememberNavController()
+    val navControllerCompose: NavHostController = rememberNavController()
 
     val scope = rememberCoroutineScope()
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val navBackStackEntry by navControllerCompose.currentBackStackEntryAsState()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val currentDestination = navBackStackEntry?.destination
     val snackBarHostState = remember {
@@ -264,11 +270,11 @@ fun ActivityMain(
                             } == true,
                             onClick = {
                                 when (item.type) {
-                                    ScreenType.Compose -> navController.navigate(
+                                    ScreenType.Compose -> navControllerCompose.navigate(
                                         route = item.route
                                     ) {
                                         popUpTo(
-                                            id = navController.graph.findStartDestination().id
+                                            id = navControllerCompose.graph.findStartDestination().id
                                         ) {
                                             saveState = true
                                         }
@@ -287,11 +293,11 @@ fun ActivityMain(
                                     ScreenType.Fragment -> current(
                                         item.route.toInt()
                                     ).also {
-                                        navController.navigate(
+                                        navControllerCompose.navigate(
                                             route = Screen.Flutter.route
                                         ) {
                                             popUpTo(
-                                                id = navController.graph.findStartDestination().id
+                                                id = navControllerCompose.graph.findStartDestination().id
                                             ) {
                                                 saveState = true
                                             }
@@ -410,11 +416,11 @@ fun ActivityMain(
                         actions = {
                             IconButton(
                                 onClick = {
-                                    navController.navigate(
+                                    navControllerCompose.navigate(
                                         route = Screen.Manager.route
                                     ) {
                                         popUpTo(
-                                            id = navController.graph.findStartDestination().id
+                                            id = navControllerCompose.graph.findStartDestination().id
                                         ) {
                                             saveState = true
                                         }
@@ -447,11 +453,11 @@ fun ActivityMain(
                                     it.route == item.route
                                 } == true,
                                 onClick = {
-                                    if (item.type == ScreenType.Compose) navController.navigate(
+                                    if (item.type == ScreenType.Compose) navControllerCompose.navigate(
                                         route = item.route
                                     ) {
                                         popUpTo(
-                                            id = navController.graph.findStartDestination().id
+                                            id = navControllerCompose.graph.findStartDestination().id
                                         ) {
                                             saveState = true
                                         }
@@ -522,11 +528,11 @@ fun ActivityMain(
                                         it.route == item.route
                                     } == true,
                                     onClick = {
-                                        if (item.type == ScreenType.Compose) navController.navigate(
+                                        if (item.type == ScreenType.Compose) navControllerCompose.navigate(
                                             route = item.route
                                         ) {
                                             popUpTo(
-                                                id = navController.graph.findStartDestination().id
+                                                id = navControllerCompose.graph.findStartDestination().id
                                             ) {
                                                 saveState = true
                                             }
@@ -555,7 +561,7 @@ fun ActivityMain(
                     }
                 }
                 NavHost(
-                    navController = navController,
+                    navController = navControllerCompose,
                     startDestination = Screen.Overview.route,
                     modifier = when (navigationType) {
                         NavigationType.PermanentNavigationDrawer -> Modifier.fillMaxSize()
@@ -570,7 +576,7 @@ fun ActivityMain(
                         route = Screen.Overview.route
                     ) {
                         ScreenOverview(
-                            navController = navController,
+                            navController = navControllerCompose,
                             shizukuVersion = shizukuVersion
                         )
                     }
@@ -592,14 +598,16 @@ fun ActivityMain(
                         route = Screen.Flutter.route
                     ) {
                         ScreenHome(
-                            rootLayout = flutter
+                            rootLayout = flutter,
+                            search = {},
+                            navControllerFragment = navControllerFragment
                         )
                     }
                     composable(
                         route = Screen.Manager.route
                     ) {
                         ScreenManager(
-                            navController = navController,
+                            navController = navControllerCompose,
                             toggle = toggle,
                             current = current,
                             targetAppName = stringResource(id = R.string.app_name),
@@ -619,7 +627,8 @@ fun ActivityMain(
                         route = Screen.Settings.route
                     ) {
                         ScreenSettings(
-                            navController = navController,
+                            navControllerCompose = navControllerCompose,
+                            navControllerFragment = navControllerFragment,
                             scope = scope,
                             snackBarHostState = snackBarHostState,
                             current = current,
@@ -628,13 +637,13 @@ fun ActivityMain(
                             onDefaultLauncherSettings = {}
                         )
                     }
-                    composable(
-                        route = Screen.Preference.route
-                    ) {
-                        ScreenPreference(
-                            preferenceUpdate = preferenceUpdate
-                        )
-                    }
+//                    composable(
+//                        route = Screen.Preference.route
+//                    ) {
+//                        ScreenPreference(
+//                            preferenceUpdate = preferenceUpdate
+//                        )
+//                    }
                     composable(
                         route = Screen.About.route
                     ) {

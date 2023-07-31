@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -40,7 +41,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ScreenSettings(
-    navController: NavHostController,
+    navControllerCompose: NavHostController,
+    navControllerFragment: NavController,
     scope: CoroutineScope,
     snackBarHostState: SnackbarHostState,
     current: (Int) -> Unit,
@@ -79,16 +81,18 @@ fun ScreenSettings(
                     title = "首选项",
                     summary = "配置 TermPlux"
                 ) {
-                    navController.navigate(
-                        route = Screen.Preference.route
+                    navControllerCompose.navigate(
+                        route = Screen.Container.route
                     ) {
                         popUpTo(
-                            id = navController.graph.findStartDestination().id
+                            id = navControllerCompose.graph.findStartDestination().id
                         ) {
                             saveState = true
                         }
                         launchSingleTop = true
                         restoreState = true
+                    }.run {
+                        navControllerFragment.navigate(R.id.nav_settings)
                     }
                 }
                 // 关于
@@ -97,11 +101,11 @@ fun ScreenSettings(
                     title = stringResource(id = R.string.about_title),
                     summary = stringResource(id = R.string.about_summary)
                 ) {
-                    navController.navigate(
+                    navControllerCompose.navigate(
                         route = Screen.About.route
                     ) {
                         popUpTo(
-                            navController.graph.findStartDestination().id
+                            navControllerCompose.graph.findStartDestination().id
                         ) {
                             saveState = true
                         }
@@ -187,7 +191,8 @@ fun ScreenSettings(
 private fun ScreenSettingsPreview() {
     EcosedFrameworkTheme {
         ScreenSettings(
-            navController = rememberNavController(),
+            navControllerCompose = rememberNavController(),
+            navControllerFragment = rememberNavController(),
             scope = rememberCoroutineScope(),
             snackBarHostState = remember {
                 SnackbarHostState()

@@ -78,11 +78,10 @@ fun ScreenAbout(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        horizontal = 16.dp
-                    )
-                    .padding(
-                        top = 5.dp,
-                        bottom = 8.dp
+                        start = 12.dp,
+                        top = 12.dp,
+                        end = 12.dp,
+                        bottom = 6.dp
                     )
             ) {
                 Column {
@@ -370,11 +369,10 @@ fun ScreenAbout(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        horizontal = 16.dp
-                    )
-                    .padding(
-                        top = 8.dp,
-                        bottom = 16.dp
+                        start = 12.dp,
+                        top = 6.dp,
+                        end = 12.dp,
+                        bottom = 6.dp
                     )
             ) {
                 Column {
@@ -432,7 +430,7 @@ fun ScreenAbout(
                                         style = MaterialTheme.typography.titleMedium
                                     )
                                     Text(
-                                        text = "主要开发者",
+                                        text = "设计/开发/维护/测试/宣传",
                                         style = MaterialTheme.typography.bodySmall
                                     )
                                 }
@@ -502,7 +500,7 @@ fun ScreenAbout(
                                         )
                                 ) {
                                     Text(
-                                        text = "TermPlux Project Team",
+                                        text = "Ecosed Project",
                                         style = MaterialTheme.typography.titleMedium
                                     )
                                     Text(
@@ -528,6 +526,37 @@ fun ScreenAbout(
                             }
                         }
                     }
+                }
+            }
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 12.dp,
+                        top = 6.dp,
+                        end = 12.dp,
+                        bottom = 12.dp
+                    )
+            ) {
+                Column {
+                    Text(
+                        text = "本软件部分设计源自彩虹的缤纷色彩，旨在支持LGBTQ+群体。",
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    Text(
+                        text = "不向焦虑与抑郁投降，这个世界终会有我们存在的地方。",
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    Text(
+                        text = "愿人间少一分伤害，多一份关怀。",
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.bodySmall
+                    )
                 }
             }
         }

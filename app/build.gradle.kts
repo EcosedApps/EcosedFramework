@@ -94,6 +94,7 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
 }
 
 configurations.all {
@@ -145,7 +146,7 @@ dependencies {
     implementation(dependencyNotation = "androidx.fragment:fragment-ktx:1.6.0")
     implementation(dependencyNotation = "androidx.preference:preference-ktx:1.2.0")
     implementation(dependencyNotation = "androidx.viewpager2:viewpager2:1.0.0")
-    implementation(dependencyNotation = "androidx.recyclerview:recyclerview:1.3.0")
+    implementation(dependencyNotation = "androidx.recyclerview:recyclerview:1.3.1")
     implementation(dependencyNotation = "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation(dependencyNotation = "androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
     implementation(dependencyNotation = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")

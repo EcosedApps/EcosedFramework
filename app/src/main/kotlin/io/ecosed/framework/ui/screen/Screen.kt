@@ -11,6 +11,8 @@ import androidx.compose.material.icons.twotone.Home
 import androidx.compose.material.icons.twotone.Info
 import androidx.compose.material.icons.twotone.RoomPreferences
 import androidx.compose.material.icons.twotone.Settings
+import androidx.compose.material.icons.twotone.Title
+import androidx.compose.material.icons.twotone.ViewArray
 import androidx.compose.ui.graphics.vector.ImageVector
 import io.ecosed.framework.R
 import io.ecosed.framework.ui.navigation.ItemType
@@ -25,6 +27,14 @@ sealed class Screen constructor(
     @StringRes val title: Int,
 ) {
 
+    object ComposeTitle: Screen(
+        type = ScreenType.Title,
+        item = ItemType.Title,
+        route = ScreenRoute.Title,
+        imageVector = Icons.TwoTone.Title,
+        title = R.string.title_compose
+    )
+
     object Overview: Screen(
         type = ScreenType.Compose,
         item = ItemType.Default,
@@ -37,7 +47,7 @@ sealed class Screen constructor(
         type = ScreenType.Compose,
         item = ItemType.Default,
         route = ScreenRoute.routeContainer,
-        imageVector = Icons.TwoTone.Android,
+        imageVector = Icons.TwoTone.ViewArray,
         title = R.string.app_name
     )
 
@@ -89,13 +99,13 @@ sealed class Screen constructor(
         title = R.string.menu_settings
     )
 
-    object Preference : Screen(
-        type = ScreenType.Compose,
-        item = ItemType.Default,
-        route = "preference",
-        imageVector = Icons.TwoTone.RoomPreferences,
-        title = R.string.menu_preference
-    )
+//    object Preference : Screen(
+//        type = ScreenType.Compose,
+//        item = ItemType.Default,
+//        route = "preference",
+//        imageVector = Icons.TwoTone.RoomPreferences,
+//        title = R.string.menu_preference
+//    )
 
     object About : Screen(
         type = ScreenType.Compose,
@@ -103,5 +113,13 @@ sealed class Screen constructor(
         route = ScreenRoute.routeAbout,
         imageVector = Icons.TwoTone.Info,
         title = R.string.menu_about
+    )
+
+    object FragmentTitle: Screen(
+        type = ScreenType.Title,
+        item = ItemType.Title,
+        route = ScreenRoute.Title,
+        imageVector = Icons.TwoTone.Title,
+        title = R.string.title_fragment
     )
 }

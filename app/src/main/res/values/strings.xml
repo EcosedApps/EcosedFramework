@@ -17,6 +17,9 @@
     <string name="menu_info">Info</string>
     <string name="menu_delete">Delete</string>
 
+    <string name="title_compose">Compose</string>
+    <string name="title_fragment">Fragment</string>
+
 
     <!-- 空内容 -->
     <string name="todo" translatable="false">\t</string>

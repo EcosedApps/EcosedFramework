@@ -34,6 +34,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import io.ecosed.framework.R
 import io.ecosed.framework.ui.preview.ScreenPreviews
 import io.ecosed.framework.ui.theme.EcosedFrameworkTheme
@@ -41,7 +43,9 @@ import io.ecosed.framework.ui.widget.FlutterFactory
 
 @Composable
 fun ScreenHome(
-    rootLayout: FrameLayout
+    rootLayout: FrameLayout,
+    search: () -> Unit,
+    navControllerFragment: NavController
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -50,14 +54,14 @@ fun ScreenHome(
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
-            Image(
-                painter = painterResource(
-                    id = R.drawable.custom_wallpaper_24
-                ),
-                contentDescription = null,
-                contentScale = ContentScale.FillBounds,
-                modifier = Modifier.fillMaxSize()
-            )
+//            Image(
+//                painter = painterResource(
+//                    id = R.drawable.custom_wallpaper_24
+//                ),
+//                contentDescription = null,
+//                contentScale = ContentScale.FillBounds,
+//                modifier = Modifier.fillMaxSize()
+//            )
             Column {
                 ElevatedCard(
                     modifier = Modifier
@@ -67,8 +71,10 @@ fun ScreenHome(
                             fill = true
                         )
                         .padding(
-                            vertical = 8.dp,
-                            horizontal = 16.dp
+                            start = 12.dp,
+                            top = 12.dp,
+                            end = 12.dp,
+                            bottom = 6.dp
                         )
                 ) {
                     FlutterFactory(
@@ -80,8 +86,10 @@ fun ScreenHome(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            vertical = 8.dp,
-                            horizontal = 16.dp
+                            start = 12.dp,
+                            top = 6.dp,
+                            end = 12.dp,
+                            bottom = 12.dp
                         )
                 ) {
                     Row(
@@ -91,12 +99,12 @@ fun ScreenHome(
                                 intrinsicSize = IntrinsicSize.Min
                             )
                             .clickable {
-
+                                search()
                             }
                     ) {
                         IconButton(
                             onClick = {
-
+                                search()
                             }
                         ) {
                             Icon(
@@ -116,7 +124,7 @@ fun ScreenHome(
                         }
                         IconButton(
                             onClick = {
-                                // nav to home
+                                navControllerFragment.navigate(R.id.nav_flutter)
                             },
                             modifier = Modifier
                                 .weight(
@@ -157,7 +165,11 @@ fun ScreenHomePreview() {
                         Gravity.CENTER
                     )
                 )
-            }
+            },
+            search = {
+
+            },
+            navControllerFragment = rememberNavController()
         )
     }
 }
