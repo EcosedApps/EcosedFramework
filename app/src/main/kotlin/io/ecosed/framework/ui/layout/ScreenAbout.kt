@@ -552,7 +552,7 @@ fun ScreenAbout(
                         style = MaterialTheme.typography.bodySmall
                     )
                     Text(
-                        text = "愿人间少一分伤害，多一份关怀。",
+                        text = "愿人间少一分伤害，多一份理解与关怀。",
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodySmall
