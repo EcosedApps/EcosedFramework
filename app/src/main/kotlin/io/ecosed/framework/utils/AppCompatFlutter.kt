@@ -9,4 +9,5 @@ interface AppCompatFlutter {
     fun onFlutterDestroy(flutterView: FlutterView?)
     fun getFlutterFragment(): FlutterBoostFragment
 
+
 }

@@ -21,9 +21,8 @@ import io.flutter.embedding.android.TransparencyMode
 
 class ContainerFragment : Fragment() {
 
-    private lateinit var mFragmentManager: FragmentManager
     private var flutterFragment: FlutterBoostFragment? = null
-
+    private lateinit var mFragmentManager: FragmentManager
     private lateinit var mFlutterReturn: FragmentContainerView
     private lateinit var mNavigationView: NavigationView
 
