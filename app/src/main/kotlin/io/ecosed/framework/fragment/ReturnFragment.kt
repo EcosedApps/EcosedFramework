@@ -1,9 +1,11 @@
 package io.ecosed.framework.fragment
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Space
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
@@ -16,27 +18,47 @@ class ReturnFragment : FlutterBoostFragment() {
 
     private var flutterView: FlutterView? = null
 
+//    override fun onCreateView(
+//        inflater: LayoutInflater,
+//        container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View = NavigationView(requireActivity()).apply {
+//        super.onCreateView(inflater, container, savedInstanceState)?.let { parent ->
+//            flutterView = findFlutterView(view = parent)
+//            apply {
+//                setBackgroundColor(Color.TRANSPARENT)
+//                inflateHeaderView(R.layout.nav_header_main)
+//                inflateMenu(R.menu.activity_main_drawer)
+//                setupWithNavController(
+//                    navController = findNavController()
+//                )
+//            }.run {
+//                when (val activity = requireActivity()) {
+//                    is AppCompatFlutter -> {
+//                        (activity as AppCompatFlutter).apply {
+//                            onFlutterCreated(
+//                                flutterView = flutterView
+//                            )
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = NavigationView(requireActivity()).apply {
-        super.onCreateView(inflater, container, savedInstanceState)?.let { parent ->
+    ): View = Space(requireContext()).apply {
+        super.onCreateView(inflater, container, savedInstanceState)?.let {parent ->
             flutterView = findFlutterView(view = parent)
-            apply {
-                inflateHeaderView(R.layout.nav_header_main)
-                inflateMenu(R.menu.activity_main_drawer)
-                setupWithNavController(
-                    navController = findNavController()
-                )
-            }.run {
-                when (val activity = requireActivity()) {
-                    is AppCompatFlutter -> {
-                        (activity as AppCompatFlutter).apply {
-                            onFlutterCreated(
-                                flutterView = flutterView
-                            )
-                        }
+            when (val activity = requireActivity()) {
+                is AppCompatFlutter -> {
+                    (activity as AppCompatFlutter).apply {
+                        onFlutterCreated(
+                            flutterView = flutterView
+                        )
                     }
                 }
             }

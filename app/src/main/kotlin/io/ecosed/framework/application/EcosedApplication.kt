@@ -1,7 +1,6 @@
 package io.ecosed.framework.application
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.graphics.Color
@@ -15,9 +14,6 @@ import com.kongzue.dialogx.DialogX
 import com.kongzue.dialogx.style.IOSStyle
 import io.ecosed.framework.activity.MainActivity
 import io.ecosed.framework.delegate.BoostDelegate
-import io.ecosed.framework.services.BillingService
-import io.ecosed.framework.services.EcosedService
-import io.ecosed.framework.services.LicensingService
 import io.ecosed.framework.settings.EcosedSettings
 import io.flutter.app.FlutterApplication
 import io.flutter.embedding.engine.FlutterEngine
