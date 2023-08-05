@@ -62,7 +62,6 @@ import rikka.core.res.isNight
 import rikka.material.app.MaterialActivity
 import rikka.shizuku.Shizuku
 
-
 class MainActivity : MaterialActivity(), ServiceConnection, FlutterPlugin,
     MethodChannel.MethodCallHandler, AppCompatFlutter, FlutterEngineConfigurator,
     Shizuku.OnBinderReceivedListener, Shizuku.OnBinderDeadListener,
@@ -145,7 +144,7 @@ class MainActivity : MaterialActivity(), ServiceConnection, FlutterPlugin,
         }
         mContainer = mFragmentContainerView
         // 随机抽取诗句作为子标题
-       // mActionBar.subtitle = poem[(poem.indices).random()]
+        // mActionBar.subtitle = poem[(poem.indices).random()]
 
         lifecycle.addObserver(this@MainActivity)
 

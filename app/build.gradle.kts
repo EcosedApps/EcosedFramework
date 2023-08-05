@@ -17,6 +17,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
+        renderscriptTargetApi = 24
+        renderscriptSupportModeEnabled = true
+
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -76,10 +79,11 @@ android {
     }
 
     buildFeatures {
-        viewBinding = true
-        buildConfig = true
-        compose = true
         aidl = true
+        compose = true
+        buildConfig = true
+        renderScript = true
+        viewBinding = true
     }
 
     composeOptions {

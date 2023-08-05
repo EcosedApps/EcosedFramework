@@ -1,23 +1,28 @@
 package io.ecosed.framework.adapter
 
+import android.graphics.Color
 import android.text.TextUtils
 import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.AppUtils
 import com.google.android.material.snackbar.Snackbar
+import com.kongzue.dialogx.dialogs.MessageDialog
 import com.kongzue.dialogx.dialogs.PopMenu
 import com.kongzue.dialogx.dialogs.PopTip
 import com.kongzue.dialogx.interfaces.OnIconChangeCallBack
+import com.kongzue.dialogx.util.TextInfo
 import io.ecosed.framework.BuildConfig
 import io.ecosed.framework.R
 import io.ecosed.framework.holder.AppsViewHolder
 import io.ecosed.framework.model.AppsModel
+
 
 class AppsAdapter constructor(
     applicationList: List<AppsModel>,
@@ -92,7 +97,7 @@ class AppsAdapter constructor(
             setImageDrawable(
                 AppUtils.getAppIcon(
                     mApplicationList[
-                            holder.absoluteAdapterPosition
+                        holder.absoluteAdapterPosition
                     ].pkgName
                 )
             )
@@ -107,103 +112,116 @@ class AppsAdapter constructor(
             // 设置文本
             text = AppUtils.getAppName(
                 mApplicationList[
-                        holder.absoluteAdapterPosition
+                    holder.absoluteAdapterPosition
                 ].pkgName
             )
         }
 
         holder.itemView.setOnLongClickListener { view ->
-            PopMenu.show(
-                holder.itemView,
-                if (
-                    mApplicationList[
+            MessageDialog.build()
+                .setTitle(
+                    AppUtils.getAppName(
+                        mApplicationList[
                             holder.absoluteAdapterPosition
-                    ].pkgName != BuildConfig.APPLICATION_ID
-                ) arrayOf(
-                    view.context.getString(R.string.menu_open),
-                    view.context.getString(R.string.menu_info),
-                    view.context.getString(R.string.menu_delete)
-                ) else arrayOf(
-                    view.context.getString(R.string.menu_apps),
-                    view.context.getString(R.string.menu_flutter),
-                    view.context.getString(R.string.menu_settings)
+                        ].pkgName
+                    )
                 )
-            )
-                .setWidth((holder.itemView.width)*2)
-                .setOverlayBaseView(false)
-                .setAlignGravity(Gravity.BOTTOM)
-
-
-//                .setCancelButton("Cancel")
-//                .setMessage(
-//                    AppUtils.getAppName(
-//                        mApplicationList[
-//                                holder.absoluteAdapterPosition
-//                        ].pkgName
-//                    )
-//                )
-//                .setMenuItemTextInfoInterceptor(
-//                    object : MenuItemTextInfoInterceptor<BottomMenu>() {
-//                        override fun menuItemTextInfo(
-//                            dialog: BottomMenu?,
-//                            index: Int,
-//                            menuText: String?
-//                        ): TextInfo? {
-//                            return if (index == 2) {
-//                                TextInfo()
-//                                    .setFontColor(Color.RED)
-//                                    .setBold(true)
-//                            } else null
-//                        }
-//                    }
-//                )
-                .setOnIconChangeCallBack(
-                    object : OnIconChangeCallBack<PopMenu?>(true) {
-                        override fun getIcon(
-                            dialog: PopMenu?,
-                            index: Int,
-                            menuText: String?
-                        ): Int {
-                            return if (
-                                mApplicationList[
-                                        holder.absoluteAdapterPosition
-                                ].pkgName != BuildConfig.APPLICATION_ID
-                            ) when (index) {
-                                open -> R.drawable.outline_open_in_new_24
-                                info -> R.drawable.outline_info_24
-                                delete -> R.drawable.outline_delete_24
-                                else -> 0
-                            } else when (index) {
-                                open -> R.drawable.outline_open_in_new_24
-                                info -> R.drawable.outline_open_in_new_24
-                                delete -> R.drawable.outline_open_in_new_24
-                                else -> 0
-                            }
-                        }
+                .setMessage(R.string.app_name)
+                .setOkButton(
+                    if (
+                        mApplicationList[
+                            holder.absoluteAdapterPosition
+                        ].pkgName != BuildConfig.APPLICATION_ID
+                    ) {
+                        R.string.menu_delete
+                    } else {
+                        R.string.menu_settings
                     }
                 )
-
-                .setOnMenuItemClickListener { _, _, index ->
+                .setOkButton { _, _ ->
                     if (mApplicationList[
-                                holder.absoluteAdapterPosition
+                            holder.absoluteAdapterPosition
                         ].pkgName != BuildConfig.APPLICATION_ID
-                    ) when (index) {
-                        open -> openApp(view = view, position = position)
-                        info -> infoApp(position = position)
-                        delete -> deleteApp(view = view, position = position)
-                    } else when (index) {
-                        open -> navToLauncher()
-                        info -> navToHome()
-                        delete -> navToSettings()
+                    ) {
+                        deleteApp(
+                            view = view,
+                            position = position
+                        )
+                    } else {
+                        navToSettings()
                     }
                     false
                 }
+                .setCancelButton(
+                    if (
+                        mApplicationList[
+                            holder.absoluteAdapterPosition
+                        ].pkgName != BuildConfig.APPLICATION_ID
+                    ) {
+                        R.string.menu_open
+                    } else {
+                        R.string.menu_apps
+                    }
+                )
+                .setCancelButton { _, _ ->
+                    if (mApplicationList[
+                            holder.absoluteAdapterPosition
+                        ].pkgName != BuildConfig.APPLICATION_ID
+                    ) {
+                        openApp(
+                            view = view,
+                            position = position
+                        )
+                    } else {
+                        navToLauncher()
+                    }
+                    false
+                }
+                .setOtherButton(
+                    if (
+                        mApplicationList[
+                            holder.absoluteAdapterPosition
+                        ].pkgName != BuildConfig.APPLICATION_ID
+                    ) {
+                        R.string.menu_info
+                    } else {
+                        R.string.menu_flutter
+                    }
+                )
+                .setOtherButton { _, _ ->
+                    if (mApplicationList[
+                            holder.absoluteAdapterPosition
+                        ].pkgName != BuildConfig.APPLICATION_ID
+                    ) {
+                        infoApp(
+                            position = position
+                        )
+                    } else {
+                        navToHome()
+                    }
+                    false
+                }
+                .setOkTextInfo(
+                    if (
+                        mApplicationList[
+                            holder.absoluteAdapterPosition
+                        ].pkgName != BuildConfig.APPLICATION_ID
+                    ) {
+                        TextInfo().setFontColor(Color.RED).setBold(true)
+                    } else {
+                        TextInfo().setBold(true)
+                    }
+                )
+                .setButtonOrientation(
+                    LinearLayout.VERTICAL
+                )
+                .show()
             true
         }
 
         holder.itemView.setOnClickListener { view ->
             if (mApplicationList[
-                        holder.absoluteAdapterPosition
+                    holder.absoluteAdapterPosition
                 ].pkgName != BuildConfig.APPLICATION_ID
             ) {
                 openApp(view = view, position = position)

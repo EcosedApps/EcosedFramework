@@ -7,7 +7,12 @@
     <fragment
         android:id="@+id/nav_flutter"
         android:name="io.ecosed.framework.fragment.ContainerFragment"
-        android:label="@string/menu_flutter"/>
+        android:label="@string/menu_flutter" />
+
+    <fragment
+        android:id="@+id/nav_apps"
+        android:name="io.ecosed.framework.fragment.AppsFragment"
+        android:label="@string/menu_apps" />
 
     <fragment
         android:id="@+id/nav_settings"

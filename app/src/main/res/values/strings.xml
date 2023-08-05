@@ -43,9 +43,9 @@
     <string name="dynamic_colors_summary">This takes effect after you restart the app. Only Android 12+ is supported.</string>
     <string name="dynamic_colors_error">Only Android 12+ is supported.</string>
     <string name="about_title">About</string>
-    <string name="about_summary">About TermPlux</string>
+    <string name="about_summary">About Ecosed Framework</string>
     <string name="uninstall_title">Delete</string>
-    <string name="uninstall_summary">Uninstall TermPlux</string>
+    <string name="uninstall_summary">Uninstall Ecosed Framework</string>
     <string name="desktop_category_title">Desktop</string>
     <string name="desktop_title">Use full desktop mode</string>
     <string name="desktop_summary">This takes effect after you restart the app. Only Android 10+ is supported.</string>

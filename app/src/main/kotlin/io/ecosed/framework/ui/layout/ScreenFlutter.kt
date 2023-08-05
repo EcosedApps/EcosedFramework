@@ -3,7 +3,6 @@ package io.ecosed.framework.ui.layout
 import android.view.Gravity
 import android.widget.FrameLayout
 import android.widget.TextView
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,6 +18,7 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FlutterDash
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -28,9 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -42,7 +40,7 @@ import io.ecosed.framework.ui.theme.EcosedFrameworkTheme
 import io.ecosed.framework.ui.widget.FlutterFactory
 
 @Composable
-fun ScreenHome(
+fun ScreenFlutter(
     rootLayout: FrameLayout,
     search: () -> Unit,
     navControllerFragment: NavController
@@ -90,7 +88,10 @@ fun ScreenHome(
                             top = 6.dp,
                             end = 12.dp,
                             bottom = 12.dp
-                        )
+                        ),
+                    colors = CardDefaults.elevatedCardColors(
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer
+                    )
                 ) {
                     Row(
                         modifier = Modifier
@@ -124,7 +125,13 @@ fun ScreenHome(
                         }
                         IconButton(
                             onClick = {
-                                navControllerFragment.navigate(R.id.nav_flutter)
+
+                                if (navControllerFragment.currentDestination?.id != R.id.nav_flutter){
+                                    navControllerFragment.navigate(R.id.nav_flutter)
+                                } else {
+
+                                }
+
                             },
                             modifier = Modifier
                                 .weight(
@@ -149,9 +156,9 @@ fun ScreenHome(
 
 @Composable
 @ScreenPreviews
-fun ScreenHomePreview() {
+fun ScreenFlutterPreview() {
     EcosedFrameworkTheme {
-        ScreenHome(
+        ScreenFlutter(
             rootLayout = FrameLayout(LocalContext.current).apply {
                 addView(
                     TextView(LocalContext.current).apply {

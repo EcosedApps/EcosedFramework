@@ -65,10 +65,10 @@ fun ScreenSettings(
         ) {
             ElevatedCard(
                 modifier = Modifier.padding(
-                    start = 16.dp,
-                    end = 16.dp,
-                    top = 5.dp,
-                    bottom = 8.dp
+                    start = 12.dp,
+                    top = 12.dp,
+                    end = 12.dp,
+                    bottom = 6.dp
                 )
             ) {
                 Text(
@@ -79,7 +79,7 @@ fun ScreenSettings(
                 SettingsItem(
                     icon = Icons.Filled.RoomPreferences,
                     title = "首选项",
-                    summary = "配置 TermPlux"
+                    summary = "配置 Ecosed Framework"
                 ) {
                     navControllerCompose.navigate(
                         route = Screen.Container.route
@@ -92,7 +92,11 @@ fun ScreenSettings(
                         launchSingleTop = true
                         restoreState = true
                     }.run {
-                        navControllerFragment.navigate(R.id.nav_settings)
+                        if (navControllerFragment.currentDestination?.id != R.id.nav_settings){
+                            navControllerFragment.navigate(R.id.nav_settings)
+                        } else {
+
+                        }
                     }
                 }
                 // 关于
@@ -124,10 +128,10 @@ fun ScreenSettings(
             }
             ElevatedCard(
                 modifier = Modifier.padding(
-                    start = 16.dp,
-                    end = 16.dp,
-                    top = 8.dp,
-                    bottom = 8.dp
+                    start = 12.dp,
+                    top = 6.dp,
+                    end = 12.dp,
+                    bottom = 6.dp
                 )
             ) {
                 Text(
@@ -154,10 +158,10 @@ fun ScreenSettings(
             }
             ElevatedCard(
                 modifier = Modifier.padding(
-                    start = 16.dp,
-                    end = 16.dp,
-                    top = 8.dp,
-                    bottom = 16.dp
+                    start = 12.dp,
+                    top = 6.dp,
+                    end = 12.dp,
+                    bottom = 12.dp
                 )
             ) {
                 Text(

@@ -9,7 +9,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
-import android.system.Os
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.blankj.utilcode.util.PermissionUtils
@@ -53,17 +52,12 @@ class EcosedService : Service() {
         return object : EcosedFramework.Stub() {
             override fun getFrameworkVersion(): String = frameworkVersion()
             override fun getShizukuVersion(): String = shizukuVersion()
-            override fun getAndroidVersion(): String = androidVersion()
-            override fun getKernelVersion(): String = kernelVersion()
-            override fun getSystemVersion(): String = systemVersion()
-            override fun getMachineArch(): String = machineArch()
             override fun getChineseCale(): String = chineseCale()
             override fun getOnePoem(): String = onePoem()
             override fun isWatch(): Boolean = watch()
             override fun isUseDynamicColors(): Boolean = dynamicColors()
             override fun openDesktopSettings() = taskbarSettings()
             override fun openEcosedSettings() = ecosedSettings()
-            override fun execCmd(cmd: String) = execShell(cmd = cmd)
         }
     }
 
@@ -88,35 +82,6 @@ class EcosedService : Service() {
         } catch (e: Exception) {
             Log.getStackTraceString(e)
         }
-    }
-
-    private fun androidVersion(): String {
-        return when (Build.VERSION.SDK_INT) {
-            Build.VERSION_CODES.N -> "Android Nougat 7.0"
-            Build.VERSION_CODES.N_MR1 -> "Android Nougat 7.1"
-            Build.VERSION_CODES.O -> "Android Oreo 8.0"
-            Build.VERSION_CODES.O_MR1 -> "Android Oreo 8.1"
-            Build.VERSION_CODES.P -> "Android Pie 9"
-            Build.VERSION_CODES.Q -> "Android Q 10"
-            Build.VERSION_CODES.R -> "Android R 11"
-            Build.VERSION_CODES.S -> "Android S 12"
-            Build.VERSION_CODES.S_V2 -> "Android Sv2 12.1"
-            Build.VERSION_CODES.TIRAMISU -> "Android Tiramisu 13"
-            34 -> "Android UpsideDownCake 14"
-            else -> "unknown"
-        }
-    }
-
-    private fun kernelVersion(): String {
-        return Os.uname().release
-    }
-
-    private fun systemVersion(): String {
-        return Os.uname().version
-    }
-
-    private fun machineArch(): String {
-        return Os.uname().machine
     }
 
     private fun chineseCale(): String {
@@ -150,10 +115,6 @@ class EcosedService : Service() {
         CoroutineScope(Dispatchers.Main).launch {
 
         }
-    }
-
-    private fun execShell(cmd: String) {
-
     }
 
     private fun setupNotificationChannel() {

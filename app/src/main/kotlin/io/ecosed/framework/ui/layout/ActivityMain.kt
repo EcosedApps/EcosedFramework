@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardCommandKey
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MenuOpen
 import androidx.compose.material.icons.filled.MoreVert
@@ -23,6 +24,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -48,6 +50,7 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -597,7 +600,7 @@ fun ActivityMain(
                     composable(
                         route = Screen.Flutter.route
                     ) {
-                        ScreenHome(
+                        ScreenFlutter(
                             rootLayout = flutter,
                             search = {},
                             navControllerFragment = navControllerFragment
