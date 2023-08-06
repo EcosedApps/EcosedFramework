@@ -91,7 +91,7 @@ import kotlinx.coroutines.launch
 fun ActivityMain(
     windowSize: WindowSizeClass,
     displayFeatures: List<DisplayFeature>,
-    navControllerFragment: NavController,
+    subNavController: NavController,
     configuration: AppBarConfiguration,
     container: FragmentContainerView,
     flutter: FrameLayout,
@@ -603,7 +603,7 @@ fun ActivityMain(
                         ScreenFlutter(
                             rootLayout = flutter,
                             search = {},
-                            navControllerFragment = navControllerFragment
+                            subNavController = subNavController
                         )
                     }
                     composable(
@@ -631,7 +631,7 @@ fun ActivityMain(
                     ) {
                         ScreenSettings(
                             navControllerCompose = navControllerCompose,
-                            navControllerFragment = navControllerFragment,
+                            navControllerFragment = subNavController,
                             scope = scope,
                             snackBarHostState = snackBarHostState,
                             current = current,

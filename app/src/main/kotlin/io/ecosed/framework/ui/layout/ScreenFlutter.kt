@@ -43,110 +43,96 @@ import io.ecosed.framework.ui.widget.FlutterFactory
 fun ScreenFlutter(
     rootLayout: FrameLayout,
     search: () -> Unit,
-    navControllerFragment: NavController
+    subNavController: NavController
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ) {
-//            Image(
-//                painter = painterResource(
-//                    id = R.drawable.custom_wallpaper_24
-//                ),
-//                contentDescription = null,
-//                contentScale = ContentScale.FillBounds,
-//                modifier = Modifier.fillMaxSize()
-//            )
-            Column {
-                ElevatedCard(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(
-                            weight = 1f,
-                            fill = true
-                        )
-                        .padding(
-                            start = 12.dp,
-                            top = 12.dp,
-                            end = 12.dp,
-                            bottom = 6.dp
-                        )
-                ) {
-                    FlutterFactory(
-                        factory = rootLayout,
-                        modifier = Modifier.fillMaxSize()
+        Column {
+            ElevatedCard(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(
+                        weight = 1f,
+                        fill = true
                     )
-                }
-                ElevatedCard(
+                    .padding(
+                        start = 12.dp,
+                        top = 12.dp,
+                        end = 12.dp,
+                        bottom = 6.dp
+                    )
+            ) {
+                FlutterFactory(
+                    factory = rootLayout,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+            ElevatedCard(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 12.dp,
+                        top = 6.dp,
+                        end = 12.dp,
+                        bottom = 12.dp
+                    ),
+                colors = CardDefaults.elevatedCardColors(
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer
+                )
+            ) {
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(
-                            start = 12.dp,
-                            top = 6.dp,
-                            end = 12.dp,
-                            bottom = 12.dp
-                        ),
-                    colors = CardDefaults.elevatedCardColors(
-                        containerColor = MaterialTheme.colorScheme.secondaryContainer
-                    )
+                        .height(
+                            intrinsicSize = IntrinsicSize.Min
+                        )
+                        .clickable {
+                            search()
+                        }
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(
-                                intrinsicSize = IntrinsicSize.Min
-                            )
-                            .clickable {
-                                search()
-                            }
+                    IconButton(
+                        onClick = {
+                            search()
+                        }
                     ) {
-                        IconButton(
-                            onClick = {
-                                search()
+                        Icon(
+                            imageVector = Icons.Filled.Search,
+                            contentDescription = null
+                        )
+                    }
+                    Column(
+                        modifier = Modifier.fillMaxHeight(),
+                        verticalArrangement = Arrangement.Center,
+                    ) {
+                        Text(
+                            text = "Search...",
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.titleSmall
+                        )
+                    }
+                    IconButton(
+                        onClick = {
+                            if (subNavController.currentDestination?.id != R.id.nav_flutter){
+                                subNavController.navigate(R.id.nav_flutter)
+                            } else {
+
                             }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.Search,
-                                contentDescription = null
+                        },
+                        modifier = Modifier
+                            .weight(
+                                weight = 1f,
+                                fill = true
                             )
-                        }
-                        Column(
-                            modifier = Modifier.fillMaxHeight(),
-                            verticalArrangement = Arrangement.Center,
-                        ) {
-                            Text(
-                                text = "Search...",
-                                textAlign = TextAlign.Center,
-                                style = MaterialTheme.typography.titleSmall
+                            .wrapContentWidth(
+                                align = Alignment.End
                             )
-                        }
-                        IconButton(
-                            onClick = {
-
-                                if (navControllerFragment.currentDestination?.id != R.id.nav_flutter){
-                                    navControllerFragment.navigate(R.id.nav_flutter)
-                                } else {
-
-                                }
-
-                            },
-                            modifier = Modifier
-                                .weight(
-                                    weight = 1f,
-                                    fill = true
-                                )
-                                .wrapContentWidth(
-                                    align = Alignment.End
-                                )
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.FlutterDash,
-                                contentDescription = null,
-                            )
-                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.FlutterDash,
+                            contentDescription = null,
+                        )
                     }
                 }
             }
@@ -176,7 +162,7 @@ fun ScreenFlutterPreview() {
             search = {
 
             },
-            navControllerFragment = rememberNavController()
+            subNavController = rememberNavController()
         )
     }
 }

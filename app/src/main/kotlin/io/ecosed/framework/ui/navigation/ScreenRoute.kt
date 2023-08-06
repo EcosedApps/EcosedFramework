@@ -7,12 +7,17 @@ package io.ecosed.framework.ui.navigation
  * 描述: Compose导航路由
  */
 object ScreenRoute {
-    const val routeHome: String = "home"
+
+
+    const val routeOverview: String = "overview"
     const val routeContainer: String = "container"
-    const val routeDashboard: String = "dashboard"
-    const val routeManager : String = "manager"
+    const val routeFlutter: String = "flutter"
     const val routeSettings: String = "settings"
     const val routeAbout: String = "about"
+
+
+    const val routeManager : String = "manager"
+
 
     const val Divider: String = "divider"
     const val Title: String = "title"

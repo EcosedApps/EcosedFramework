@@ -1,7 +1,14 @@
+import java.io.FileInputStream
+import java.util.*
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("androidx.navigation.safeargs.kotlin")
+}
+
+val properties = Properties().apply {
+    load(FileInputStream(rootProject.file("contest.properties")))
 }
 
 android {
@@ -9,16 +16,34 @@ android {
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "io.ecosed.framework"
+        applicationId = namespace
         minSdk = 24
-        targetSdk = 33
+        targetSdk = compileSdk
         versionCode = 1
         versionName = "1.0.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        renderscriptTargetApi = 24
+        renderscriptTargetApi = minSdk
         renderscriptSupportModeEnabled = true
+
+        buildConfigField(
+            type = Boolean::class.java.typeName,
+            name = "isContest",
+            value = properties.getProperty("isContest")
+        )
+
+        buildConfigField(
+            type = String::class.java.typeName,
+            name = "actionName",
+            value = properties.getProperty("actionName")
+        )
+
+        buildConfigField(
+            type = String::class.java.typeName,
+            name = "teacherName",
+            value = properties.getProperty("teacherName")
+        )
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         vectorDrawables {
             useSupportLibrary = true
@@ -72,6 +97,10 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    kotlin {
+        jvmToolchain(11)
     }
 
     kotlinOptions {
@@ -147,7 +176,7 @@ dependencies {
     implementation(dependencyNotation = "androidx.core:core-ktx:1.10.1")
     implementation(dependencyNotation = "androidx.annotation:annotation:1.6.0")
     implementation(dependencyNotation = "androidx.browser:browser:1.5.0")
-    implementation(dependencyNotation = "androidx.fragment:fragment-ktx:1.6.0")
+    implementation(dependencyNotation = "androidx.fragment:fragment-ktx:1.6.1")
     implementation(dependencyNotation = "androidx.preference:preference-ktx:1.2.0")
     implementation(dependencyNotation = "androidx.viewpager2:viewpager2:1.0.0")
     implementation(dependencyNotation = "androidx.recyclerview:recyclerview:1.3.1")

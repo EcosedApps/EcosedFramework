@@ -402,7 +402,7 @@ class MainActivity : MaterialActivity(), ServiceConnection, FlutterPlugin,
                 ActivityMain(
                     windowSize = windowSize,
                     displayFeatures = displayFeatures,
-                    navControllerFragment = navController,
+                    subNavController = navController,
                     configuration = appBarConfiguration,
                     container = mContainer,
                     flutter = mFlutterFrame,

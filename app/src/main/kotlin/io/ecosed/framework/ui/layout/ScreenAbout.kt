@@ -18,7 +18,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardCommandKey
 import androidx.compose.material.icons.filled.LibraryBooks
@@ -42,8 +41,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -71,9 +68,6 @@ fun ScreenAbout(
     val scrollState = rememberScrollState()
     val position = remember {
         mutableStateOf(value = 0)
-    }
-    val entries = remember {
-        mutableStateOf(value = false)
     }
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -376,7 +370,7 @@ fun ScreenAbout(
                 }
             }
             AnimatedVisibility(
-                visible = entries.value
+                visible = BuildConfig.isContest
             ) {
                 ElevatedCard(
                     modifier = Modifier
@@ -400,9 +394,9 @@ fun ScreenAbout(
                         Surface(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clickable {
-
-                                }
+                                .height(
+                                    height = 75.dp
+                                )
                         ) {
                             Image(
                                 painter = painterResource(
@@ -577,7 +571,7 @@ fun ScreenAbout(
                         start = 12.dp,
                         top = 6.dp,
                         end = 12.dp,
-                        bottom = 6.dp
+                        bottom = 12.dp
                     )
             ) {
                 Column {
@@ -734,48 +728,48 @@ fun ScreenAbout(
                     }
                 }
             }
-            AnimatedVisibility(
-                visible = !entries.value
-            ) {
-                Surface(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            start = 12.dp,
-                            top = 6.dp,
-                            end = 12.dp,
-                            bottom = 12.dp
-                        )
-                ) {
-                    Column {
-                        Text(
-                            text = "部分设计源自彩虹的缤纷色彩，旨在支持LGBTQ+群体。",
-                            modifier = Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                        Text(
-                            text = "不向焦虑与抑郁投降，这个世界终会有我们存在的地方。",
-                            modifier = Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                        Text(
-                            text = "愿人间少一份伤害，多一份理解与尊重。",
-                            modifier = Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                        Image(
-                            imageVector = Icons.Filled.Favorite,
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxWidth(),
-                            contentScale = ContentScale.Fit,
-                            colorFilter = ColorFilter.tint(color = Color.Red)
-                        )
-                    }
-                }
-            }
+//            AnimatedVisibility(
+//                visible = !entries.value
+//            ) {
+//                Surface(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .padding(
+//                            start = 12.dp,
+//                            top = 6.dp,
+//                            end = 12.dp,
+//                            bottom = 12.dp
+//                        )
+//                ) {
+//                    Column {
+//                        Text(
+//                            text = "部分设计源自彩虹的缤纷色彩，旨在支持LGBTQ+群体。",
+//                            modifier = Modifier.fillMaxWidth(),
+//                            textAlign = TextAlign.Center,
+//                            style = MaterialTheme.typography.bodySmall
+//                        )
+//                        Text(
+//                            text = "不向焦虑与抑郁投降，这个世界终会有我们存在的地方。",
+//                            modifier = Modifier.fillMaxWidth(),
+//                            textAlign = TextAlign.Center,
+//                            style = MaterialTheme.typography.bodySmall
+//                        )
+//                        Text(
+//                            text = "愿人间少一份伤害，多一份理解与尊重。",
+//                            modifier = Modifier.fillMaxWidth(),
+//                            textAlign = TextAlign.Center,
+//                            style = MaterialTheme.typography.bodySmall
+//                        )
+//                        Image(
+//                            imageVector = Icons.Filled.Favorite,
+//                            contentDescription = null,
+//                            modifier = Modifier.fillMaxWidth(),
+//                            contentScale = ContentScale.Fit,
+//                            colorFilter = ColorFilter.tint(color = Color.Red)
+//                        )
+//                    }
+//                }
+//            }
         }
     }
 }

@@ -3,10 +3,4 @@ package io.ecosed.framework.activity
 import android.os.Bundle
 import com.idlefish.flutterboost.containers.FlutterBoostActivity
 
-class FlutterActivity : FlutterBoostActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-}
+class FlutterActivity : FlutterBoostActivity()

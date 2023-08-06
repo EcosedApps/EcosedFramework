@@ -38,7 +38,7 @@ sealed class Screen constructor(
     object Overview: Screen(
         type = ScreenType.Compose,
         item = ItemType.Default,
-        route = ScreenRoute.routeDashboard,
+        route = ScreenRoute.routeOverview,
         imageVector = Icons.TwoTone.Home,
         title = R.string.menu_overview
     )
@@ -62,7 +62,7 @@ sealed class Screen constructor(
     object Flutter : Screen(
         type = ScreenType.Compose,
         item = ItemType.Default,
-        route = ScreenRoute.routeHome,
+        route = ScreenRoute.routeFlutter,
         imageVector = Icons.TwoTone.FlutterDash,
         title = R.string.menu_flutter
     )
