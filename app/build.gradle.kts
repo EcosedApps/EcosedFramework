@@ -7,43 +7,51 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
 }
 
-val properties = Properties().apply {
+val contestProp: Properties = Properties().apply {
     load(FileInputStream(rootProject.file("contest.properties")))
 }
 
+val keyStoreProp: Properties = Properties().apply {
+    load(FileInputStream(rootProject.file("keystore.properties")))
+}
+
+val pack: String by extra(initialValue = "io.ecosed.framework")
+val max: Int by extra(initialValue = 33)
+val min: Int by extra(initialValue = 24)
+val name: String by extra(initialValue = "1.0.0")
+val code: Int by extra(initialValue = 1)
+
 android {
-    namespace = "io.ecosed.framework"
-    compileSdk = 33
+    namespace = pack
+    compileSdk = max
 
     defaultConfig {
         applicationId = namespace
-        minSdk = 24
+        minSdk = min
         targetSdk = compileSdk
-        versionCode = 1
-        versionName = "1.0.0"
-
+        versionCode = code
+        versionName = name
         renderscriptTargetApi = minSdk
         renderscriptSupportModeEnabled = true
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField(
             type = Boolean::class.java.typeName,
             name = "isContest",
-            value = properties.getProperty("isContest")
+            value = contestProp.getProperty("isContest")
         )
 
         buildConfigField(
             type = String::class.java.typeName,
             name = "actionName",
-            value = properties.getProperty("actionName")
+            value = contestProp.getProperty("actionName")
         )
 
         buildConfigField(
             type = String::class.java.typeName,
             name = "teacherName",
-            value = properties.getProperty("teacherName")
+            value = contestProp.getProperty("teacherName")
         )
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         vectorDrawables {
             useSupportLibrary = true
