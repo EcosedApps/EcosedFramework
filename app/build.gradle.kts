@@ -1,11 +1,20 @@
 import java.io.FileInputStream
 import java.util.*
 
-plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("androidx.navigation.safeargs.kotlin")
-}
+/** 应用包名 */
+val pack: String by extra(initialValue = "io.ecosed.framework")
+
+/** 兼容最高版本 */
+val max: Int by extra(initialValue = 33)
+
+/** 兼容最低版本 */
+val min: Int by extra(initialValue = 24)
+
+/** 版本名 */
+val name: String by extra(initialValue = "1.0.0")
+
+/** 版本号 */
+val code: Int by extra(initialValue = 1)
 
 val contestProp: Properties = Properties().apply {
     load(FileInputStream(rootProject.file("contest.properties")))
@@ -15,11 +24,11 @@ val keyStoreProp: Properties = Properties().apply {
     load(FileInputStream(rootProject.file("keystore.properties")))
 }
 
-val pack: String by extra(initialValue = "io.ecosed.framework")
-val max: Int by extra(initialValue = 33)
-val min: Int by extra(initialValue = 24)
-val name: String by extra(initialValue = "1.0.0")
-val code: Int by extra(initialValue = 1)
+plugins {
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+    id("androidx.navigation.safeargs.kotlin")
+}
 
 android {
     namespace = pack
