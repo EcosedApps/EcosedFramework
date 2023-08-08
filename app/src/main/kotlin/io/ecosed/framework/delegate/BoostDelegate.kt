@@ -10,12 +10,13 @@ import io.ecosed.framework.activity.MainActivity
 import io.flutter.embedding.android.FlutterActivityLaunchConfigs
 
 class BoostDelegate : FlutterBoostDelegate {
+
     override fun pushNativeRoute(options: FlutterBoostRouteOptions?) {
         val intent = Intent(
             FlutterBoost.instance().currentActivity(),
             MainActivity::class.java
         )
-        when (options?.pageName()){
+        when (options?.pageName()) {
             "native" -> FlutterBoost.instance().currentActivity()
                 .startActivityForResult(intent, options.requestCode())
         }

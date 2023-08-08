@@ -1,6 +1,7 @@
 package io.ecosed.framework.activity
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -39,31 +40,44 @@ import com.blankj.utilcode.util.ServiceUtils
 import com.google.accompanist.adaptive.calculateDisplayFeatures
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.internal.EdgeToEdgeUtils
+import com.idlefish.flutterboost.FlutterBoost
+import com.idlefish.flutterboost.FlutterBoost.Callback
 import com.idlefish.flutterboost.containers.FlutterBoostFragment
 import io.ecosed.framework.EcosedFramework
 import io.ecosed.framework.R
 import io.ecosed.framework.databinding.ContainerBinding
+import io.ecosed.framework.delegate.BoostDelegate
 import io.ecosed.framework.fragment.ReturnFragment
 import io.ecosed.framework.services.EcosedService
 import io.ecosed.framework.ui.layout.ActivityMain
 import io.ecosed.framework.ui.theme.EcosedFrameworkTheme
 import io.ecosed.framework.utils.AppCompatFlutter
 import io.ecosed.framework.utils.ThemeHelper
+import io.ecosed.plugin.EcosedPlugin
+import io.ecosed.plugin.EcosedPluginBinding
+import io.ecosed.plugin.EcosedPluginEngine
+import io.ecosed.plugin.EcosedPluginMethod
+import io.ecosed.plugin.EcosedResult
+import io.ecosed.plugin.PluginEngineBuilder
 import io.flutter.embedding.android.FlutterEngineConfigurator
 import io.flutter.embedding.android.FlutterView
 import io.flutter.embedding.android.RenderMode
 import io.flutter.embedding.android.TransparencyMode
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.plugins.FlutterPlugin
+import io.flutter.embedding.engine.plugins.activity.ActivityAware
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
+import io.flutter.plugins.GeneratedPluginRegistrant
 import rikka.core.ktx.unsafeLazy
 import rikka.core.res.isNight
 import rikka.material.app.MaterialActivity
 import rikka.shizuku.Shizuku
+import java.lang.ref.WeakReference
 
-class MainActivity : MaterialActivity(), ServiceConnection, FlutterPlugin,
-    MethodChannel.MethodCallHandler, AppCompatFlutter, FlutterEngineConfigurator,
+class MainActivity : MaterialActivity(), FlutterBoost.Callback, ServiceConnection, FlutterPlugin, EcosedPlugin,
+    MethodChannel.MethodCallHandler, ActivityAware, AppCompatFlutter, FlutterEngineConfigurator,
     Shizuku.OnBinderReceivedListener, Shizuku.OnBinderDeadListener,
     Shizuku.OnRequestPermissionResultListener, DefaultLifecycleObserver, Runnable {
 
@@ -71,7 +85,6 @@ class MainActivity : MaterialActivity(), ServiceConnection, FlutterPlugin,
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
-    private lateinit var mActionBar: ActionBar
     private lateinit var mContainer: FragmentContainerView
 
     private lateinit var mFlutterFragment: FlutterBoostFragment
@@ -80,18 +93,9 @@ class MainActivity : MaterialActivity(), ServiceConnection, FlutterPlugin,
 
     private var mFramework: EcosedFramework? = null
 
-//    private val poem: ArrayList<String> = arrayListOf(
-//        "不向焦虑与抑郁投降，这个世界终会有我们存在的地方。",
-//        "把喜欢的一切留在身边，这便是努力的意义。",
-//        "治愈、温暖，这就是我们最终幸福的结局。",
-//        "我有一个梦，也许有一天，灿烂的阳光能照进黑暗森林。",
-//        "如果必须要失去，那么不如一开始就不曾拥有。",
-//        "我们的终点就是与幸福同在。",
-//        "孤独的人不会伤害别人，只会不断地伤害自己罢了。",
-//        "如果你能记住我的名字，如果你们都能记住我的名字，也许我或者我们，终有一天能自由地生存着。",
-//        "对于所有生命来说，不会死亡的绝望，是最可怕的审判。",
-//        "我不曾活着，又何必害怕死亡。"
-//    )
+    private lateinit var mEngine: EcosedPluginEngine
+    private var mActivity: Activity? = null
+    private lateinit var pluginMethod: EcosedPluginMethod
 
     private val toolbar: MaterialToolbar by unsafeLazy {
         MaterialToolbar(this@MainActivity)
@@ -108,9 +112,29 @@ class MainActivity : MaterialActivity(), ServiceConnection, FlutterPlugin,
         }
     }
 
+    override fun onStart(engine: FlutterEngine?) {
+        engine?.let {
+            try {
+                it.plugins.add(MainActivity()).run {
+                    GeneratedPluginRegistrant.registerWith(it)
+                }
+            } catch (e: Exception) {
+                Log.e(MainActivity.tag, Log.getStackTraceString(e))
+            }
+        }
+    }
+
     // material activity begin
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        WeakReference(application).get()?.apply {
+            FlutterBoost.instance().setup(
+                this@apply,
+                BoostDelegate(),
+                this@MainActivity
+            )
+        }
+
         aidlSer = Intent(this@MainActivity, EcosedService().javaClass)
         aidlSer.action = "io.ecosed.framework.action"
         startService(aidlSer)
@@ -138,10 +162,6 @@ class MainActivity : MaterialActivity(), ServiceConnection, FlutterPlugin,
             navController = navController,
             configuration = appBarConfiguration
         )
-        // 获取操作栏
-        supportActionBar?.let {
-            mActionBar = it
-        }
         mContainer = mFragmentContainerView
         // 随机抽取诗句作为子标题
         // mActionBar.subtitle = poem[(poem.indices).random()]
@@ -162,13 +182,14 @@ class MainActivity : MaterialActivity(), ServiceConnection, FlutterPlugin,
         super.onApplyUserThemeResource(
             theme = theme,
             isDecorView = isDecorView
-        )
-        if (ThemeHelper.isUsingSystemColor()) if (resources.configuration.isNight()) {
-            theme.applyStyle(R.style.ThemeOverlay_DynamicColors_Dark, true)
-        } else {
-            theme.applyStyle(R.style.ThemeOverlay_DynamicColors_Light, true)
-        }.run {
-            theme.applyStyle(ThemeHelper.getThemeStyleRes(context = this@MainActivity), true)
+        ).run {
+            if (ThemeHelper.isUsingSystemColor()) if (resources.configuration.isNight()) {
+                theme.applyStyle(R.style.ThemeOverlay_DynamicColors_Dark, true)
+            } else {
+                theme.applyStyle(R.style.ThemeOverlay_DynamicColors_Light, true)
+            }.run {
+                theme.applyStyle(ThemeHelper.getThemeStyleRes(context = this@MainActivity), true)
+            }
         }
     }
 
@@ -208,6 +229,7 @@ class MainActivity : MaterialActivity(), ServiceConnection, FlutterPlugin,
             )
         )
     )
+
     @Suppress("DEPRECATION")
     override fun onBackPressed() {
         super.onBackPressed()
@@ -282,9 +304,7 @@ class MainActivity : MaterialActivity(), ServiceConnection, FlutterPlugin,
         Log.i(tag, "服务端绑定成功")
 
         mFramework = EcosedFramework.Stub.asInterface(service)
-        mFramework?.onePoem?.let {
-            mActionBar.subtitle = it
-        }
+
     }
 
     override fun onServiceDisconnected(name: ComponentName?) {
@@ -302,22 +322,69 @@ class MainActivity : MaterialActivity(), ServiceConnection, FlutterPlugin,
 
     // flutter plugin begin
 
+
+
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-        mChannel = MethodChannel(binding.binaryMessenger, channel)
-        mChannel.setMethodCallHandler(this@MainActivity)
-        Log.i(tag, "中中中中中")
+        mEngine = PluginEngineBuilder().init(activity = mActivity).build{ engine ->
+            mChannel = MethodChannel(binding.binaryMessenger, flutterChannel)
+            engine.attach()
+            engine.addPlugin(plugin = this@MainActivity)
+            mChannel.setMethodCallHandler(this@MainActivity)
+            return@build engine
+        }
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         mChannel.setMethodCallHandler(null)
+        mEngine.removePlugin(plugin = this@MainActivity)
+        mEngine.detach()
+    }
+
+    override fun onAttachedToActivity(binding: ActivityPluginBinding) {
+        mActivity = binding.activity
+    }
+
+    override fun onDetachedFromActivityForConfigChanges() {
+        this.onDetachedFromActivity()
+    }
+
+    override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
+        this.onAttachedToActivity(binding = binding)
+    }
+
+    override fun onDetachedFromActivity() {
+        mActivity = null
+    }
+
+    override fun getEcosedPluginMethod(): EcosedPluginMethod {
+        return pluginMethod
+    }
+
+    override fun onEcosedAttached(binding: EcosedPluginBinding) {
+        pluginMethod = EcosedPluginMethod(
+            binding = binding,
+            channel = ecosedChannel
+        )
+        pluginMethod.setMethodCallHandler(
+            callBack = this@MainActivity
+        )
+    }
+
+    override fun onEcosedDetached(binding: EcosedPluginBinding) {
+        pluginMethod.setMethodCallHandler(callBack = null)
+    }
+
+    override fun onEcosedMethodCall(call: String, result: EcosedResult) {
+        when (call) {
+            "text" -> result.success("")
+            else -> result.notImplemented()
+        }
     }
 
     // flutter plugin end
 
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
-        when (call.method) {
-
-        }
+        result.success(mEngine.execMethodCall(channel = ecosedChannel, call = call.method))
     }
 
     override fun onFlutterCreated(flutterView: FlutterView?) {
@@ -451,10 +518,9 @@ class MainActivity : MaterialActivity(), ServiceConnection, FlutterPlugin,
         error("Error: FlutterView is null!")
     }
 
-
     companion object {
         const val tag: String = "MainActivity"
-        const val channel: String = "flutter_ecosed"
+        const val flutterChannel: String = "flutter_ecosed"
+        const val ecosedChannel: String = "ecosed_ecosed"
     }
-
 }

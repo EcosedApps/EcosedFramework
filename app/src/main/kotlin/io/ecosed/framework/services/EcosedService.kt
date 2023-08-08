@@ -42,8 +42,6 @@ class EcosedService : Service() {
         super.onCreate()
         setupNotificationChannel()
         startForeground(notificationId, buildNotification())
-
-
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

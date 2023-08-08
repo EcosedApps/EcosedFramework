@@ -1,36 +1,32 @@
 import java.io.FileInputStream
 import java.util.*
 
-/** 应用包名 */
-val pack: String by extra(initialValue = "io.ecosed.framework")
-
-/** 兼容最高版本 */
-val max: Int by extra(initialValue = 33)
-
-/** 兼容最低版本 */
-val min: Int by extra(initialValue = 24)
-
-/** 版本名 */
-val name: String by extra(initialValue = "1.0.0")
-
-/** 版本号 */
-val code: Int by extra(initialValue = 1)
-
-val contestProp: Properties = Properties().apply {
-    load(FileInputStream(rootProject.file("contest.properties")))
-}
-
-val keyStoreProp: Properties = Properties().apply {
-    load(FileInputStream(rootProject.file("keystore.properties")))
-}
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("androidx.navigation.safeargs.kotlin")
 }
 
+val contestProp: Properties = Properties().apply {
+    load(FileInputStream(rootProject.file("contest.properties")))
+}
+
 android {
+    /** 应用包名 */
+    val pack: String by extra(initialValue = "io.ecosed.framework")
+
+    /** 兼容最高版本 */
+    val max: Int by extra(initialValue = 33)
+
+    /** 兼容最低版本 */
+    val min: Int by extra(initialValue = 24)
+
+    /** 版本名 */
+    val name: String by extra(initialValue = "1.0.0")
+
+    /** 版本号 */
+    val code: Int by extra(initialValue = 1)
+
     namespace = pack
     compileSdk = max
 
@@ -40,8 +36,10 @@ android {
         targetSdk = compileSdk
         versionCode = code
         versionName = name
+
         renderscriptTargetApi = minSdk
         renderscriptSupportModeEnabled = true
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField(
@@ -160,6 +158,8 @@ dependencies {
     implementation(dependencyNotation = project(path = ":flutter"))
     // FlutterBoost: https://github.com/alibaba/flutter_boost
     implementation(dependencyNotation = project(path = ":flutter_boost"))
+    // EcosedPlugin: https://github.com/ecosed/EcosedPlugin
+    implementation(dependencyNotation = "com.github.ecosed:EcosedPlugin:1.2.0")
     // AndroidUtilCode: https://github.com/Blankj/AndroidUtilCode
     implementation(dependencyNotation = "com.blankj:utilcodex:1.31.1")
     // LibTaskbar: https://github.com/farmerbb/libtaskbar

@@ -70,20 +70,7 @@ class EcosedApplication : FlutterApplication() {
      * 初始化Flutter Boost
      */
     private fun initBoost() {
-        FlutterBoost.instance().setup(
-            this@EcosedApplication,
-            BoostDelegate()
-        ) { engine: FlutterEngine? ->
-            engine?.let {
-                try {
-                    it.plugins.add(MainActivity()).run {
-                        GeneratedPluginRegistrant.registerWith(it)
-                    }
-                } catch (e: Exception) {
-                    Log.e(MainActivity.tag, Log.getStackTraceString(e))
-                }
-            }
-        }
+
     }
 
     /**
