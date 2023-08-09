@@ -1,14 +1,7 @@
-import java.io.FileInputStream
-import java.util.*
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("androidx.navigation.safeargs.kotlin")
-}
-
-val contestProp: Properties = Properties().apply {
-    load(FileInputStream(rootProject.file("contest.properties")))
 }
 
 android {
@@ -45,19 +38,19 @@ android {
         buildConfigField(
             type = Boolean::class.java.typeName,
             name = "isContest",
-            value = contestProp.getProperty("isContest")
+            value = true.toString()
         )
 
         buildConfigField(
             type = String::class.java.typeName,
             name = "actionName",
-            value = contestProp.getProperty("actionName")
+            value = "\"中等职业学生职业技能大赛\""
         )
 
         buildConfigField(
             type = String::class.java.typeName,
             name = "teacherName",
-            value = contestProp.getProperty("teacherName")
+            value = "\"王蒙\""
         )
 
         vectorDrawables {
