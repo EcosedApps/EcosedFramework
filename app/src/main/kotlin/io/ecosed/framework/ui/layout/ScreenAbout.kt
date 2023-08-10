@@ -73,18 +73,12 @@ fun ScreenAbout(
     val position: MutableState<Int> = remember {
         mutableStateOf(value = 0)
     }
-
     /**
      * 通过自定义BuildConfig获取本项目是否参与比赛
      * 如果本项目参与比赛则屏蔽可能影响成绩的敏感因素
      * 对于当下社会因素和价值观问题这是必不可少的做法
      */
-    val contest: Boolean = BuildConfig.isContest
-
-    val love: MutableState<Boolean> = remember {
-        mutableStateOf(value = !contest)
-    }
-
+    val contest: Boolean = BuildConfig.CONTEST
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
@@ -184,7 +178,6 @@ fun ScreenAbout(
                             }
                         }
                     }
-
                     Surface(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -197,7 +190,6 @@ fun ScreenAbout(
                                 .clickable {
                                     if (!contest) when (position.value) {
                                         0 -> {
-                                            love.value = false
                                             scope.launch {
                                                 snackBarHostState.showSnackbar(
                                                     "喵~"
@@ -207,7 +199,6 @@ fun ScreenAbout(
                                         }
 
                                         1 -> {
-                                            love.value = false
                                             scope.launch {
                                                 snackBarHostState.showSnackbar(
                                                     "喵喵喵?"
@@ -217,7 +208,6 @@ fun ScreenAbout(
                                         }
 
                                         2 -> {
-                                            love.value = false
                                             scope.launch {
                                                 snackBarHostState.showSnackbar(
                                                     "🍥🍥🍥"
@@ -227,8 +217,7 @@ fun ScreenAbout(
                                         }
 
                                         else -> {
-                                            //onEasterEgg()
-                                            love.value = true
+                                            onEasterEgg()
                                             position.value = 0
                                         }
                                     } else AppUtils.launchAppDetailsSettings()
@@ -399,7 +388,7 @@ fun ScreenAbout(
                             start = 12.dp,
                             top = 6.dp,
                             end = 12.dp,
-                            bottom = 6.dp
+                            bottom = 12.dp
                         )
                 ) {
                     Column {
@@ -462,7 +451,7 @@ fun ScreenAbout(
                                         style = MaterialTheme.typography.titleMedium
                                     )
                                     Text(
-                                        text = "unknown",
+                                        text = BuildConfig.ACTION_NAME,
                                         style = MaterialTheme.typography.bodySmall
                                     )
                                 }
@@ -499,7 +488,7 @@ fun ScreenAbout(
                                         style = MaterialTheme.typography.titleMedium
                                     )
                                     Text(
-                                        text = "unknown",
+                                        text = BuildConfig.TEACHER_NAME,
                                         style = MaterialTheme.typography.bodySmall
                                     )
                                 }
@@ -536,9 +525,7 @@ fun ScreenAbout(
                                         style = MaterialTheme.typography.titleMedium
                                     )
                                     Text(
-                                        text = stringResource(
-                                            id = R.string.app_name
-                                        ),
+                                        text = BuildConfig.PROJECT_NAME,
                                         style = MaterialTheme.typography.bodySmall
                                     )
                                 }
@@ -594,7 +581,7 @@ fun ScreenAbout(
                             start = 12.dp,
                             top = 6.dp,
                             end = 12.dp,
-                            bottom = 12.dp
+                            bottom = 6.dp
                         )
                 ) {
                     Column {
@@ -753,7 +740,7 @@ fun ScreenAbout(
                 }
             }
             AnimatedVisibility(
-                visible = love.value
+                visible = !contest
             ) {
                 Surface(
                     modifier = Modifier

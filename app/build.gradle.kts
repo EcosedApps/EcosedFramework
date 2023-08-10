@@ -20,6 +20,15 @@ android {
     /** 版本号 */
     val code: Int by extra(initialValue = 1)
 
+    /** 是否参赛 */
+    val isContest: Boolean by extra(initialValue = false)
+
+    /** 活动名称 */
+    val actionName: String by extra(initialValue = "中等职业学生职业技能大赛")
+
+    /** 指导教师 */
+    val teacherName: String by extra(initialValue = "王蒙")
+
     namespace = pack
     compileSdk = max
 
@@ -37,20 +46,26 @@ android {
 
         buildConfigField(
             type = Boolean::class.java.typeName,
-            name = "isContest",
-            value = true.toString()
+            name = "CONTEST",
+            value = isContest.toString()
         )
 
         buildConfigField(
             type = String::class.java.typeName,
-            name = "actionName",
-            value = "\"中等职业学生职业技能大赛\""
+            name = "ACTION_NAME",
+            value = "\"${actionName}\""
         )
 
         buildConfigField(
             type = String::class.java.typeName,
-            name = "teacherName",
-            value = "\"王蒙\""
+            name = "TEACHER_NAME",
+            value = "\"${teacherName}\""
+        )
+
+        buildConfigField(
+            type = String::class.java.typeName,
+            name = "PROJECT_NAME",
+            value = "\"${rootProject.name}\""
         )
 
         vectorDrawables {
@@ -152,7 +167,7 @@ dependencies {
     // FlutterBoost: https://github.com/alibaba/flutter_boost
     implementation(dependencyNotation = project(path = ":flutter_boost"))
     // EcosedPlugin: https://github.com/ecosed/EcosedPlugin
-    implementation(dependencyNotation = "com.github.ecosed:EcosedPlugin:1.2.0")
+    implementation(dependencyNotation = "com.github.ecosed:EcosedPlugin:1.2.1")
     // AndroidUtilCode: https://github.com/Blankj/AndroidUtilCode
     implementation(dependencyNotation = "com.blankj:utilcodex:1.31.1")
     // LibTaskbar: https://github.com/farmerbb/libtaskbar

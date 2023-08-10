@@ -3,13 +3,11 @@ package io.ecosed.framework.ui.screen
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Android
-import androidx.compose.material.icons.twotone.Android
 import androidx.compose.material.icons.twotone.AppSettingsAlt
 import androidx.compose.material.icons.twotone.Apps
 import androidx.compose.material.icons.twotone.FlutterDash
 import androidx.compose.material.icons.twotone.Home
 import androidx.compose.material.icons.twotone.Info
-import androidx.compose.material.icons.twotone.RoomPreferences
 import androidx.compose.material.icons.twotone.Settings
 import androidx.compose.material.icons.twotone.Title
 import androidx.compose.material.icons.twotone.ViewArray
@@ -48,7 +46,7 @@ sealed class Screen constructor(
         item = ItemType.Default,
         route = ScreenRoute.routeContainer,
         imageVector = Icons.TwoTone.ViewArray,
-        title = R.string.app_name
+        title = R.string.menu_container
     )
 
     object Apps: Screen(

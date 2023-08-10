@@ -2,6 +2,7 @@ package io.ecosed.framework.ui.preview
 
 import android.content.res.Configuration
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Wallpapers
 
 // 手机竖屏状态预览
 // 设备: Google Pixel 6 Pro
@@ -10,7 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 // 显示: 字体一倍大小，显示系统界面，显示背景，背景色为白色，支持系统界面模式
 @Preview(
     name = "Compact",
-    group = "TermPlux",
+    group = "Ecosed Framework",
     device = "id:pixel_6_pro",
     apiLevel = 33,
     locale = "zh-rCN",
@@ -18,7 +19,8 @@ import androidx.compose.ui.tooling.preview.Preview
     showSystemUi = true,
     showBackground = true,
     backgroundColor = 0xFFFFFFFF,
-    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_UNDEFINED
+    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_UNDEFINED,
+    wallpaper = Wallpapers.BLUE_DOMINATED_EXAMPLE
 )
 // 手机横屏状态/折叠屏展开状态预览
 // 设备: Google Pixel 6 Pro
@@ -27,15 +29,16 @@ import androidx.compose.ui.tooling.preview.Preview
 // 显示: 字体一倍大小，显示系统界面，显示背景，背景色为白色，支持系统界面模式
 @Preview(
     name = "Medium",
-    group = "TermPlux",
-    device = "spec:parent=pixel_6_pro,orientation=landscape",
+    group = "Ecosed Framework",
+    device = "spec:parent=pixel_7_pro,orientation=landscape",
     apiLevel = 33,
     locale = "zh-rCN",
     fontScale = 1.0f,
     showSystemUi = true,
     showBackground = true,
     backgroundColor = 0xFFFFFFFF,
-    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_UNDEFINED
+    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_UNDEFINED,
+    wallpaper = Wallpapers.BLUE_DOMINATED_EXAMPLE
 )
 // 平板预览
 // 设备: Google Pixel 6 Pro
@@ -44,7 +47,7 @@ import androidx.compose.ui.tooling.preview.Preview
 // 显示: 字体一倍大小，显示系统界面，显示背景，背景色为白色，支持系统界面模式
 @Preview(
     name = "Expanded",
-    group = "TermPlux",
+    group = "Ecosed Framework",
     device = "id:Nexus 10",
     apiLevel = 33,
     locale = "zh-rCN",
@@ -52,7 +55,8 @@ import androidx.compose.ui.tooling.preview.Preview
     showSystemUi = true,
     showBackground = true,
     backgroundColor = 0xFFFFFFFF,
-    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_UNDEFINED
+    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_UNDEFINED,
+    wallpaper = Wallpapers.BLUE_DOMINATED_EXAMPLE
 )
 /**
  * 作者: wyq0918dev

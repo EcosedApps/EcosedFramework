@@ -6,10 +6,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.shape.MaterialShapeDrawable
@@ -20,17 +27,28 @@ import io.ecosed.framework.ui.theme.EcosedFrameworkTheme
 @Composable
 @OptIn(ExperimentalComposeUiApi::class)
 fun TopActionBar(
-    factory: MaterialToolbar,
+    navController: NavController,
+    configuration: AppBarConfiguration,
     modifier: Modifier,
-    visible: Boolean
+    visible: Boolean,
+    update: (MaterialToolbar) -> Unit
 ) {
     val toolbarParams: AppBarLayout.LayoutParams = AppBarLayout.LayoutParams(
         AppBarLayout.LayoutParams.MATCH_PARENT,
         AppBarLayout.LayoutParams.WRAP_CONTENT
     )
 
-    val toolbar: MaterialToolbar = factory.apply {
-        setBackgroundColor(Color.Transparent.value.toInt())
+    val toolbar: MaterialToolbar = MaterialToolbar(
+        LocalContext.current
+    ).apply {
+        setBackgroundColor(
+            Color.Transparent.toArgb()
+        )
+        update(this@apply)
+        setupWithNavController(
+            navController = navController,
+            configuration = configuration
+        )
     }
 
     AnimatedVisibility(
@@ -66,17 +84,22 @@ fun TopActionBar(
 @Composable
 @WidgetPreview
 fun TopActionBarPreview() {
+    val title = stringResource(
+        id = R.string.toolbar_preview
+    )
+    val icon = ContextCompat.getDrawable(
+        LocalContext.current,
+        R.drawable.baseline_arrow_back_24
+    )
     EcosedFrameworkTheme {
         TopActionBar(
-            factory = MaterialToolbar(LocalContext.current).apply {
-                title = stringResource(id = R.string.toolbar_preview)
-                navigationIcon = ContextCompat.getDrawable(
-                    LocalContext.current,
-                    R.drawable.baseline_arrow_back_24
-                )
-            },
+            navController = rememberNavController(),
+            configuration = AppBarConfiguration.Builder().build(),
             modifier = Modifier.fillMaxWidth(),
             visible = true
-        )
+        ) {
+            it.title = title
+            it.navigationIcon = icon
+        }
     }
 }

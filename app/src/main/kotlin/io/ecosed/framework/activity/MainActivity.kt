@@ -19,6 +19,7 @@ import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
@@ -99,6 +100,12 @@ class MainActivity : MaterialActivity(), FlutterBoost.Callback, ServiceConnectio
 
     private val toolbar: MaterialToolbar by unsafeLazy {
         MaterialToolbar(this@MainActivity)
+    }
+
+    private val splashLogo: AppCompatImageView by unsafeLazy {
+        AppCompatImageView(this@MainActivity).apply {
+
+        }
     }
 
     private val mFlutterFrame: FrameLayout by unsafeLazy {
