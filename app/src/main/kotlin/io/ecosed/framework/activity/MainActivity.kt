@@ -67,6 +67,7 @@ import rikka.core.res.isNight
 import rikka.material.app.MaterialActivity
 import rikka.shizuku.Shizuku
 import java.lang.ref.WeakReference
+import java.util.ServiceLoader
 
 class MainActivity : MaterialActivity(), FlutterBoost.Callback, ServiceConnection, FlutterPlugin,
     EcosedPlugin,
@@ -130,6 +131,8 @@ class MainActivity : MaterialActivity(), FlutterBoost.Callback, ServiceConnectio
             )
         }
 
+
+        
         aidlSer = Intent(this@MainActivity, EcosedService().javaClass)
         aidlSer.action = "io.ecosed.framework.action"
         startService(aidlSer)
