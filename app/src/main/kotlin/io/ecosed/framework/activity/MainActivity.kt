@@ -15,18 +15,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.Toast
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.DefaultLifecycleObserver
@@ -35,14 +30,10 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.window.layout.DisplayFeature
-import com.blankj.utilcode.util.ServiceUtils
 import com.google.accompanist.adaptive.calculateDisplayFeatures
-import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.internal.EdgeToEdgeUtils
 import com.idlefish.flutterboost.FlutterBoost
-import com.idlefish.flutterboost.FlutterBoost.Callback
 import com.idlefish.flutterboost.containers.FlutterBoostFragment
 import io.ecosed.framework.EcosedFramework
 import io.ecosed.framework.R
@@ -77,7 +68,8 @@ import rikka.material.app.MaterialActivity
 import rikka.shizuku.Shizuku
 import java.lang.ref.WeakReference
 
-class MainActivity : MaterialActivity(), FlutterBoost.Callback, ServiceConnection, FlutterPlugin, EcosedPlugin,
+class MainActivity : MaterialActivity(), FlutterBoost.Callback, ServiceConnection, FlutterPlugin,
+    EcosedPlugin,
     MethodChannel.MethodCallHandler, ActivityAware, AppCompatFlutter, FlutterEngineConfigurator,
     Shizuku.OnBinderReceivedListener, Shizuku.OnBinderDeadListener,
     Shizuku.OnRequestPermissionResultListener, DefaultLifecycleObserver, Runnable {
@@ -97,10 +89,6 @@ class MainActivity : MaterialActivity(), FlutterBoost.Callback, ServiceConnectio
     private lateinit var mEngine: EcosedPluginEngine
     private var mActivity: Activity? = null
     private lateinit var pluginMethod: EcosedPluginMethod
-
-    private val toolbar: MaterialToolbar by unsafeLazy {
-        MaterialToolbar(this@MainActivity)
-    }
 
     private val splashLogo: AppCompatImageView by unsafeLazy {
         AppCompatImageView(this@MainActivity).apply {
@@ -126,7 +114,7 @@ class MainActivity : MaterialActivity(), FlutterBoost.Callback, ServiceConnectio
                     GeneratedPluginRegistrant.registerWith(it)
                 }
             } catch (e: Exception) {
-                Log.e(MainActivity.tag, Log.getStackTraceString(e))
+                Log.e(tag, Log.getStackTraceString(e))
             }
         }
     }
@@ -147,35 +135,19 @@ class MainActivity : MaterialActivity(), FlutterBoost.Callback, ServiceConnectio
         startService(aidlSer)
         bindService(aidlSer, this@MainActivity, Context.BIND_AUTO_CREATE)
 
-        super<MaterialActivity>.onCreate(savedInstanceState)
-        // 绑定布局
-        val binding = ContainerBinding.inflate(layoutInflater)
-        // 获取Fragment容器控件
-        val mFragmentContainerView = binding.navHostFragmentContentMain
-        // 绑定导航主机
-        val navHostFragment = supportFragmentManager.findFragmentById(
-            mFragmentContainerView.id
-        ) as NavHostFragment
-        // 导航控制器
-        navController = navHostFragment.navController
-        // 应用栏配置
-        appBarConfiguration = AppBarConfiguration(
-            navGraph = navController.graph
-        )
-        // 设置操作栏
-        setSupportActionBar(toolbar)
-        // 将操作栏与导航控制器绑定
-        setupActionBarWithNavController(
-            navController = navController,
-            configuration = appBarConfiguration
-        )
-        mContainer = mFragmentContainerView
-        // 随机抽取诗句作为子标题
-        // mActionBar.subtitle = poem[(poem.indices).random()]
-
-        lifecycle.addObserver(this@MainActivity)
-
-
+        super<MaterialActivity>.onCreate(savedInstanceState).run {
+            ContainerBinding.inflate(layoutInflater).container.let {
+                navController = (supportFragmentManager.findFragmentById(
+                    it.id
+                ) as NavHostFragment).navController
+                appBarConfiguration = AppBarConfiguration(
+                    navGraph = navController.graph
+                )
+                mContainer = it
+            }
+        }.run {
+            lifecycle.addObserver(this@MainActivity)
+        }
     }
 
     override fun computeUserThemeKey(): String {
@@ -330,9 +302,8 @@ class MainActivity : MaterialActivity(), FlutterBoost.Callback, ServiceConnectio
     // flutter plugin begin
 
 
-
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-        mEngine = PluginEngineBuilder().init(activity = mActivity).build{ engine ->
+        mEngine = PluginEngineBuilder().init(activity = mActivity).build { engine ->
             mChannel = MethodChannel(binding.binaryMessenger, flutterChannel)
             engine.attach()
             engine.addPlugin(plugin = this@MainActivity)
@@ -483,7 +454,9 @@ class MainActivity : MaterialActivity(), FlutterBoost.Callback, ServiceConnectio
 
                     appsUpdate = {},
                     topBarVisible = true,
-                    topBarView = toolbar,
+                    topBarUpdate = {
+                        setSupportActionBar(it)
+                    },
                     preferenceUpdate = { preference ->
 
                     },

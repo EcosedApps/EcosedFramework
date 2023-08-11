@@ -96,7 +96,7 @@ fun ActivityMain(
     flutter: FrameLayout,
     appsUpdate: (RecyclerView) -> Unit,
     topBarVisible: Boolean,
-    topBarView: MaterialToolbar,
+    topBarUpdate: (MaterialToolbar) -> Unit,
     preferenceUpdate: (ViewPager2) -> Unit,
     androidVersion: String,
     shizukuVersion: String,
@@ -586,8 +586,10 @@ fun ActivityMain(
                         route = Screen.Container.route
                     ) {
                         ScreenContainer(
+                            subNavController = subNavController,
+                            configuration = configuration,
                             topBarVisible = topBarVisible,
-                            topBarFactory = topBarView,
+                            topBarUpdate = topBarUpdate,
                             container = container
                         )
                     }

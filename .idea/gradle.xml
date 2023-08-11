@@ -10,7 +10,7 @@
         <option name="gradleJvm" value="jbr-17" />
         <option name="modules">
           <set>
-            <option value="$USER_HOME$/AppData/Local/Pub/Cache/git/flutter_boost-0c3e97f80496fbfca9cf97451bc060a6d7e72578/android" />
+            <option value="$USER_HOME$/AppData/Local/Pub/Cache/git/flutter_boost-0a370b2d8726ac79187a2b42449fc5ef9935fbe3/android" />
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/.android/Flutter" />
             <option value="$PROJECT_DIR$/app" />

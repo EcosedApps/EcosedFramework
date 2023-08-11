@@ -19,6 +19,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentContainerView
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.ui.AppBarConfiguration
 import com.google.android.material.appbar.MaterialToolbar
 import io.ecosed.framework.R
 import io.ecosed.framework.ui.preview.ScreenPreviews
@@ -28,8 +31,10 @@ import io.ecosed.framework.ui.widget.TopActionBar
 
 @Composable
 fun ScreenContainer(
+    subNavController: NavController,
+    configuration: AppBarConfiguration,
     topBarVisible: Boolean,
-    topBarFactory: MaterialToolbar,
+    topBarUpdate: (MaterialToolbar) -> Unit,
     container: FragmentContainerView,
 ) {
     Surface(
@@ -64,9 +69,11 @@ fun ScreenContainer(
                     )
                 ) {
                     TopActionBar(
-                        factory = topBarFactory,
+                        navController = subNavController,
+                        configuration = configuration,
                         modifier = Modifier.fillMaxWidth(),
                         visible = topBarVisible,
+                        update = topBarUpdate
                     )
                 }
                 ElevatedCard(
@@ -94,15 +101,11 @@ fun ScreenContainer(
 fun ScreenContainerPreview() {
     EcosedFrameworkTheme {
         ScreenContainer(
+            subNavController = rememberNavController(),
+            configuration = AppBarConfiguration.Builder().build(),
             topBarVisible = true,
-            topBarFactory = MaterialToolbar(
-                LocalContext.current
-            ).apply {
-                title = stringResource(id = R.string.toolbar_preview)
-                navigationIcon = ContextCompat.getDrawable(
-                    LocalContext.current,
-                    R.drawable.baseline_arrow_back_24
-                )
+            topBarUpdate = {
+
             },
             container = FragmentContainerView(
                 context = LocalContext.current
