@@ -8,9 +8,10 @@ buildscript {
     }
     dependencies {
         classpath(dependencyNotation = "com.android.tools.build:gradle:8.1.0")
-        classpath(dependencyNotation = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.21")
+        classpath(dependencyNotation = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.0")
         classpath(dependencyNotation = "com.google.gms:google-services:4.3.15")
-        classpath(dependencyNotation = "androidx.navigation:navigation-safe-args-gradle-plugin:2.6.0")
+        classpath(dependencyNotation = "androidx.navigation:navigation-safe-args-gradle-plugin:2.7.0")
+        classpath(dependencyNotation = "com.yanzhenjie.andserver:plugin:2.1.12")
     }
 }
 

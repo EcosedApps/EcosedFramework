@@ -1,7 +1,9 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.kapt")
     id("androidx.navigation.safeargs.kotlin")
+    id("com.yanzhenjie.andserver")
 }
 
 android {
@@ -126,6 +128,11 @@ android {
         jvmToolchain(11)
     }
 
+    kapt {
+        useBuildCache = false
+        showProcessorStats = true
+    }
+
     kotlinOptions {
         jvmTarget = "11"
     }
@@ -139,7 +146,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.7"
+        kotlinCompilerExtensionVersion = "1.5.0"
     }
 
     packaging {
@@ -168,6 +175,9 @@ dependencies {
     implementation(dependencyNotation = project(path = ":flutter_boost"))
     // EcosedPlugin: https://github.com/ecosed/EcosedPlugin
     implementation(dependencyNotation = "com.github.ecosed:EcosedPlugin:1.2.1")
+    //AndServer: https://github.com/yanzhenjie/AndServer
+    implementation(dependencyNotation = "com.yanzhenjie.andserver:api:2.1.12")
+    kapt(dependencyNotation = "com.yanzhenjie.andserver:processor:2.1.12")
     // AndroidUtilCode: https://github.com/Blankj/AndroidUtilCode
     implementation(dependencyNotation = "com.blankj:utilcodex:1.31.1")
     // LibTaskbar: https://github.com/farmerbb/libtaskbar
@@ -195,8 +205,8 @@ dependencies {
     // AndroidHiddenApiBypass: https://github.com/LSPosed/AndroidHiddenApiBypass
     implementation(dependencyNotation = "org.lsposed.hiddenapibypass:hiddenapibypass:4.3")
     // JetBrains 官方库
-    implementation(dependencyNotation = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21")
-    implementation(dependencyNotation = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21")
+    implementation(dependencyNotation = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.0")
+    implementation(dependencyNotation = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.0")
     // Google 官方库
     implementation(dependencyNotation = "androidx.core:core-ktx:1.10.1")
     implementation(dependencyNotation = "androidx.annotation:annotation:1.6.0")
