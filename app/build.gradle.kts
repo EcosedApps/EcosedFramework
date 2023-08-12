@@ -26,10 +26,10 @@ android {
     val isContest: Boolean by extra(initialValue = false)
 
     /** 活动名称 */
-    val actionName: String by extra(initialValue = "中等职业学生职业技能大赛")
+    val actionName: String by extra(initialValue = "unknown")
 
     /** 指导教师 */
-    val teacherName: String by extra(initialValue = "王蒙")
+    val teacherName: String by extra(initialValue = "unknown")
 
     namespace = pack
     compileSdk = max
