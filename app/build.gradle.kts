@@ -7,21 +7,6 @@ plugins {
 }
 
 android {
-    /** 应用包名 */
-    val pack: String by extra(initialValue = "io.ecosed.framework")
-
-    /** 兼容最高版本 */
-    val max: Int by extra(initialValue = 33)
-
-    /** 兼容最低版本 */
-    val min: Int by extra(initialValue = 24)
-
-    /** 版本名 */
-    val name: String by extra(initialValue = "1.0.0")
-
-    /** 版本号 */
-    val code: Int by extra(initialValue = 1)
-
     /** 是否参赛 */
     val isContest: Boolean by extra(initialValue = false)
 
@@ -31,15 +16,15 @@ android {
     /** 指导教师 */
     val teacherName: String by extra(initialValue = "unknown")
 
-    namespace = pack
-    compileSdk = max
+    namespace = "io.ecosed.framework"
+    compileSdk = 33
 
     defaultConfig {
         applicationId = namespace
-        minSdk = min
+        minSdk = 24
         targetSdk = compileSdk
-        versionCode = code
-        versionName = name
+        versionCode = 1
+        versionName = "1.0.0"
 
         renderscriptTargetApi = minSdk
         renderscriptSupportModeEnabled = true

@@ -12,6 +12,7 @@ buildscript {
         classpath(dependencyNotation = "com.google.gms:google-services:4.3.15")
         classpath(dependencyNotation = "androidx.navigation:navigation-safe-args-gradle-plugin:2.7.0")
         classpath(dependencyNotation = "com.yanzhenjie.andserver:plugin:2.1.12")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.0")
     }
 }
 
